@@ -16,7 +16,7 @@ import jakarta.persistence.Table
 @Table(name = "plant_record")
 class PlantRecord(
 
-    _imageUrl: String,
+    _imageUrl: String?,
 
     _comment: String,
 
@@ -31,13 +31,26 @@ class PlantRecord(
 ) : BaseTimeEntity() {
 
     @Embedded
-    private val imageUrl: ImageUrl
+    private val imageUrl: ImageUrl?
 
     @Embedded
     private val comment: Comment
 
     init {
-        this.imageUrl = ImageUrl(_imageUrl)
         this.comment = Comment(_comment)
+        this.imageUrl = _imageUrl?.let { ImageUrl(it) }
+    }
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as PlantRecord
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
     }
 }

@@ -12,6 +12,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import java.time.LocalDate
 
 @Entity
 @Table(name = "history")
@@ -20,6 +21,9 @@ class History(
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
     private val type: HistoryType,
+
+    @Column(name = "history_date", nullable = false)
+    private val date: LocalDate,
 
     @ManyToOne(cascade = [CascadeType.PERSIST])
     @JoinColumn(name = "companion_plant_id")
