@@ -15,7 +15,7 @@ import jakarta.persistence.Table
 import java.time.LocalDate
 
 @Entity
-@Table(name = "history")
+@Table(name = "HISTORY")
 class History(
 
     @Enumerated(EnumType.STRING)
@@ -30,7 +30,7 @@ class History(
     private val companionPlant: CompanionPlant? = null,
 
     @Id
-    @Column(name = "history_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0L,
 ) : BaseTimeEntity() {

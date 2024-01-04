@@ -12,7 +12,7 @@ import java.time.LocalDate
 import java.time.temporal.ChronoUnit
 
 @Entity
-@Table(name = "companion_plant")
+@Table(name = "COMPANION_PLANT")
 class CompanionPlant(
 
     _imageUrl: String,
@@ -42,7 +42,7 @@ class CompanionPlant(
     private val plantInformationId: Long = 0L,
 
     @Id
-    @Column(name = "companion_plant_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0L,
 ) : BaseTimeEntity() {

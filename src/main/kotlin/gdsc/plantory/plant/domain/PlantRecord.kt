@@ -13,7 +13,7 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 
 @Entity
-@Table(name = "plant_record")
+@Table(name = "PLANT_RECORD")
 class PlantRecord(
 
     _imageUrl: String?,
@@ -25,7 +25,7 @@ class PlantRecord(
     private val companionPlant: CompanionPlant? = null,
 
     @Id
-    @Column(name = "plant_record_id")
+    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0L,
 ) : BaseTimeEntity() {
