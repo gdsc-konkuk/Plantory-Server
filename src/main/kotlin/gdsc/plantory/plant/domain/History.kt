@@ -34,4 +34,17 @@ class History(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0L,
 ) : BaseTimeEntity() {
+
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
+
+        other as History
+
+        return id == other.id
+    }
+
+    override fun hashCode(): Int {
+        return id.hashCode()
+    }
 }
