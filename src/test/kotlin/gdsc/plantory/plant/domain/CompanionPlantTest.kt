@@ -1,9 +1,8 @@
 package gdsc.plantory.plant.domain
 
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatCode
 import org.assertj.core.api.Assertions.assertThatThrownBy
-import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.params.ParameterizedTest
@@ -14,8 +13,8 @@ import java.time.LocalDate
 class CompanionPlantTest {
 
     @Test
-    fun `반려식물 생성 테스`() {
-        Assertions.assertThatCode {
+    fun `반려식물 생성 테스트`() {
+        assertThatCode {
             CompanionPlant(
                 "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
                 "shine", "나의 아기 선인장", LocalDate.now(), LocalDate.now().plusDays(7), 7
