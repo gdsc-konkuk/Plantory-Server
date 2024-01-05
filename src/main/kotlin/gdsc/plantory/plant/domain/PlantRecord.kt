@@ -31,15 +31,10 @@ class PlantRecord(
 ) : BaseTimeEntity() {
 
     @Embedded
-    private val imageUrl: ImageUrl?
+    private val imageUrl: ImageUrl? = _imageUrl?.let { ImageUrl(it) }
 
     @Embedded
-    private val comment: Comment
-
-    init {
-        this.comment = Comment(_comment)
-        this.imageUrl = _imageUrl?.let { ImageUrl(it) }
-    }
+    private val comment: Comment = Comment(_comment)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

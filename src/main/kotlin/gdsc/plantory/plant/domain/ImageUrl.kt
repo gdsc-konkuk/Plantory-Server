@@ -2,15 +2,13 @@ package gdsc.plantory.plant.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
-
-import org.apache.coyote.BadRequestException
 import java.util.regex.Pattern
 
 private const val LINK_CONTENT_LENGTH_LIMIT = 1000
 
 @Embeddable
 class ImageUrl(
-        @Column(name = "image_url", length = 1000, nullable = false)
+    @Column(name = "image_url", length = LINK_CONTENT_LENGTH_LIMIT, nullable = false)
         private val _value: String,
 ) {
 

@@ -48,17 +48,13 @@ class CompanionPlant(
 ) : BaseTimeEntity() {
 
     @Embedded
-    private val imageUrl: ImageUrl
+    private val imageUrl: ImageUrl = ImageUrl(_imageUrl)
 
     @Embedded
     private val records: PlantRecords = PlantRecords()
 
     @Embedded
     private val histories: Histories = Histories()
-
-    init {
-        this.imageUrl = ImageUrl(_imageUrl)
-    }
 
     fun saveRecord(comment: String, imageUrl: String? = null) =
         this.records.add(PlantRecord(imageUrl, comment, this))
