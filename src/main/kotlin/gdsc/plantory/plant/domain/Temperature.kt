@@ -10,4 +10,10 @@ class Temperature(
 
     @Column(name = "minimum_temp", nullable = false)
     private val minimum: String,
-)
+) {
+    init {
+        if (require.isBlank() or minimum.isBlank()) {
+            throw IllegalArgumentException("\"temperature\"은 공백일 수 없습니다.")
+        }
+    }
+}

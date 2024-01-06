@@ -16,4 +16,10 @@ class WaterCycle(
 
     @Column(name = "water_cycle_winter", nullable = false)
     private val winter: Int,
-)
+) {
+    init {
+        if ((spring <= 0) or (summer <= 0) or (autumn <= 0) or (winter <= 0)) {
+            throw IllegalArgumentException("\"waterCycle\"은 양의 정수여야 합니다.")
+        }
+    }
+}
