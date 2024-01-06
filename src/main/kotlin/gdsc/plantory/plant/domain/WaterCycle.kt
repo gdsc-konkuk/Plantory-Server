@@ -6,14 +6,14 @@ import jakarta.persistence.Embeddable
 @Embeddable
 class WaterCycle(
     @Column(name = "water_cycle_spring", nullable = false)
-    private var spring: String,
+    private val spring: Int,
 
     @Column(name = "water_cycle_summer", nullable = false)
-    private var summer: String,
+    private val summer: Int,
 
     @Column(name = "water_cycle_autumn", nullable = false)
-    private var autumn: String,
+    private val autumn: Int,
 
     @Column(name = "water_cycle_winter", nullable = false)
-    private var winter: String,
+    private val winter: Int,
 )

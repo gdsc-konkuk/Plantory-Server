@@ -14,41 +14,37 @@ import jakarta.persistence.Table
 class PlantInformation(
     _imageUrl: String,
 
-    @Column(name = "name", nullable = false)
-    private var name: String,
+    _species: String,
+    _familyName: String,
 
-    @Column(name = "family_name")
-    private var familyName: String? = null,
+    _requireTemp: String,
+    _minimumTemp: String,
 
-    @Column(name = "smell")
-    private var smell: String? = null,
+    _waterCycleSpring: Int,
+    _waterCycleSummer: Int,
+    _waterCycleAutumn: Int,
+    _waterCycleWinter: Int,
+
+    @Column(name = "smell", nullable = false)
+    private var smell: String,
+
+    @Column(name = "manage_level", nullable = false)
+    private var manageLevel: String,
+
+    @Column(name = "grow_speed", nullable = false)
+    private var growSpeed: String,
+
+    @Column(name = "require_humidity", nullable = false)
+    private var requireHumidity: String,
+
+    @Column(name = "posting_place", nullable = false)
+    private var postingPlace: String,
 
     @Column(name = "poison")
     private var poison: String? = null,
 
-    @Column(name = "manage_level")
-    private var manageLevel: String? = null,
-
-    @Column(name = "grow_speed")
-    private var growSpeed: String? = null,
-
-    @Column(name = "require_temp")
-    private var requireTemp: String? = null,
-
-    @Column(name = "minimum_temp")
-    private var minimumTemp: String? = null,
-
-    @Column(name = "require_humidity")
-    private var requireHumidity: String? = null,
-
-    @Column(name = "posting_place")
-    private var postingPlace: String? = null,
-
     @Column(name = "special_manage_info")
     private var specialManageInfo: String? = null,
-
-    @Embedded
-    private val waterCycle: WaterCycle? = null,
 
     @Id
     @Column(name = "id")
@@ -59,11 +55,16 @@ class PlantInformation(
     @Embedded
     private val imageUrl: ImageUrl = ImageUrl(_imageUrl)
 
-    init {
-        if (name.isBlank()) {
-            throw IllegalArgumentException("\"name\"은 공백일 수 없습니다.")
-        }
-    }
+    @Embedded
+    private val species: Species = Species(_species, _familyName)
+
+    @Embedded
+    private val temperature: Temperature = Temperature(_requireTemp, _minimumTemp)
+
+    @Embedded
+    private val waterCycle: WaterCycle = WaterCycle(
+        _waterCycleSpring, _waterCycleSummer, _waterCycleAutumn, _waterCycleWinter
+    )
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
