@@ -19,8 +19,7 @@ class CompanionPlant(
 
     _shortDescription: String,
 
-    @Column(name = "nickname", nullable = false)
-    private var nickname: String,
+    _nickname: String,
 
     @Column(name = "next_water_date", nullable = false)
     private var nextWaterDate: LocalDate,
@@ -32,7 +31,7 @@ class CompanionPlant(
     private var waterCycle: Int,
 
     @Column(name = "birth_date")
-    private var birthDate: LocalDate? = null,
+    private val birthDate: LocalDate? = null,
 
     @Column(name = "member_id", nullable = false)
     private val memberId: Long = 0L,
@@ -51,6 +50,9 @@ class CompanionPlant(
 
     @Embedded
     private val shortDescription: ShortDescription = ShortDescription(_shortDescription)
+
+    @Embedded
+    private val nickname: NickName = NickName(_nickname)
 
     @Embedded
     private val records: PlantRecords = PlantRecords()

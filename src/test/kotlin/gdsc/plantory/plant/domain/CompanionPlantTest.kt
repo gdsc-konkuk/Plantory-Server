@@ -57,6 +57,23 @@ class CompanionPlantTest {
     }
 
     @Test
+    fun `식물 별칭 테스트`() {
+        // given
+        val nickName = "16자리 짧은 소개 문구!!!!"
+
+        // when, then
+        assertThatThrownBy {
+            CompanionPlant(
+                "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
+                "shortDescription", nickName, LocalDate.now(), LocalDate.now().plusDays(7),
+                7, LocalDate.of(2023, 1, 1)
+            )
+        }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("\"nickName\"은 16자를 초과할 수 없습니다.")
+    }
+
+    @Test
     fun `짧은 소개 문구 테스트`() {
         // given
         val shortDescription = "16자리 짧은 소개 문구!!!!"
