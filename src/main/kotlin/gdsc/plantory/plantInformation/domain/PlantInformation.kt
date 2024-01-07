@@ -1,6 +1,7 @@
-package gdsc.plantory.plant.domain
+package gdsc.plantory.plantInformation.domain
 
 import gdsc.plantory.common.domain.BaseTimeEntity
+import gdsc.plantory.plant.domain.ImageUrl
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity

@@ -1,4 +1,4 @@
-package gdsc.plantory.plant.domain
+package gdsc.plantory.plantInformation.domain
 
 import jakarta.persistence.Column
 import jakarta.persistence.Embeddable
