@@ -9,6 +9,7 @@ import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import java.time.LocalDate
 
+
 @DisplayName("도메인 : CompanionPlant")
 class CompanionPlantTest {
 
@@ -17,7 +18,7 @@ class CompanionPlantTest {
         assertThatCode {
             CompanionPlant(
                 "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-                "shine", "나의 아기 선인장", LocalDate.now(), LocalDate.now().plusDays(7), 7
+                "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7), 7
             )
         }
             .doesNotThrowAnyException()
@@ -28,7 +29,7 @@ class CompanionPlantTest {
         // given
         val companionPlant = CompanionPlant(
             "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-            "shine", "나의 아기 선인장", LocalDate.now(), LocalDate.now().plusDays(7), 7
+            "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7), 7
         )
 
         // when
@@ -44,7 +45,7 @@ class CompanionPlantTest {
         // given
         val companionPlant = CompanionPlant(
             "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-            "shine", "나의 아기 선인장", LocalDate.now(), LocalDate.now().plusDays(7), 7
+            "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7), 7
         )
 
         // when
@@ -55,13 +56,30 @@ class CompanionPlantTest {
         assertThat(companionPlant.historySize()).isEqualTo(2)
     }
 
+    @Test
+    fun `짧은 소개 문구 테스트`() {
+        // given
+        val shortDescription = "16자리 짧은 소개 문구!!!!"
+
+        // when, then
+        assertThatThrownBy {
+            CompanionPlant(
+                "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
+                shortDescription, "shine", LocalDate.now(), LocalDate.now().plusDays(7),
+                7, LocalDate.of(2023, 1, 1)
+            )
+        }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("\"shortDescription\"은 16자를 초과할 수 없습니다.")
+    }
+
     @ParameterizedTest
     @CsvSource(value = ["2023,1,1,1", "2023,1,7,7", "2023,2,1,32"])
     fun `반려식물과 함께한 일수 계산`(year: Int, month: Int, day: Int, daySince: Int) {
         // given
         val companionPlant = CompanionPlant(
             "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-            "shine", "나의 아기 선인장", LocalDate.now(), LocalDate.now().plusDays(7),
+            "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7),
             7, LocalDate.of(2023, 1, 1)
         )
 
@@ -77,7 +95,7 @@ class CompanionPlantTest {
         // given
         val companionPlant = CompanionPlant(
             "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-            "shine", "나의 아기 선인장", LocalDate.now(), LocalDate.now().plusDays(7),
+            "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7),
             7, LocalDate.of(2023, 1, 1)
         )
 

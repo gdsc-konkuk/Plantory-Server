@@ -17,11 +17,10 @@ class CompanionPlant(
 
     _imageUrl: String,
 
+    _shortDescription: String,
+
     @Column(name = "nickname", nullable = false)
     private var nickname: String,
-
-    @Column(name = "short_description", nullable = false)
-    private var shortDescription: String,
 
     @Column(name = "next_water_date", nullable = false)
     private var nextWaterDate: LocalDate,
@@ -49,6 +48,9 @@ class CompanionPlant(
 
     @Embedded
     private val imageUrl: ImageUrl = ImageUrl(_imageUrl)
+
+    @Embedded
+    private val shortDescription: ShortDescription = ShortDescription(_shortDescription)
 
     @Embedded
     private val records: PlantRecords = PlantRecords()
