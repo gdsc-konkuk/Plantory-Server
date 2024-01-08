@@ -1,12 +1,12 @@
-package gdsc.plantory.plant.domain
+package gdsc.plantory.member.domain
 
 import gdsc.plantory.common.domain.BaseTimeEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Table
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
+import jakarta.persistence.Id
+import jakarta.persistence.Table
 
 @Entity
 @Table(name = "MEMBER")

@@ -1,5 +1,6 @@
 package gdsc.plantory.plant.domain
 
+import gdsc.plantory.plantInformation.domain.PlantInformation
 import org.assertj.core.api.Assertions.assertThatCode
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
