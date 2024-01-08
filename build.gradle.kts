@@ -38,6 +38,7 @@ dependencies {
 
     // TEST
     testImplementation("org.springframework.boot:spring-boot-starter-test")
+    testImplementation("io.mockk:mockk:1.12.4")
 
     // QueryDsl
     implementation("com.querydsl:querydsl-jpa:5.0.0")
