@@ -39,6 +39,10 @@ dependencies {
     // TEST
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("io.mockk:mockk:1.12.4")
+    testImplementation("org.testcontainers:testcontainers:1.17.6")
+    testImplementation("org.testcontainers:junit-jupiter:1.17.6")
+    testImplementation("org.testcontainers:mysql:1.17.6")
+    testImplementation("io.rest-assured:rest-assured")
 
     // QueryDsl
     implementation("com.querydsl:querydsl-jpa:5.0.0")
