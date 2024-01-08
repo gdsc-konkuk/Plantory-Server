@@ -74,15 +74,15 @@ class CompanionPlantTest {
     }
 
     @Test
-    fun `짧은 소개 문구 테스트`() {
+    fun `소개 문구가 너무 길 경우 예외가 발생`() {
         // given
-        val shortDescription = "16자리 짧은 소개 문구!!!!"
+        val tooLongDescription = "16자리 짧은 소개 문구!!!!"
 
         // when, then
         assertThatThrownBy {
             CompanionPlant(
                 "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-                shortDescription, "shine", LocalDate.now(), LocalDate.now().plusDays(7),
+                tooLongDescription, "shine", LocalDate.now(), LocalDate.now().plusDays(7),
                 7, LocalDate.of(2023, 1, 1)
             )
         }

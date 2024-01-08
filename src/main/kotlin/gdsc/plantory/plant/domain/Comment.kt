@@ -20,7 +20,7 @@ class Comment(
         }
 
         if(content.length > MAX_CONTENT_LENGTH) {
-            throw IllegalArgumentException("300자를 초과하는 기록은 저장할 수 없습니다.")
+            throw IllegalArgumentException("${MAX_CONTENT_LENGTH}자를 초과하는 기록은 저장할 수 없습니다.")
         }
     }
 }

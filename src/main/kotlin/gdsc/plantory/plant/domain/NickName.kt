@@ -21,7 +21,7 @@ class NickName(
         }
 
         if (value.length > NICKNAME_MAX_LENGTH) {
-            throw IllegalArgumentException("\"nickName\"은 16자를 초과할 수 없습니다.")
+            throw IllegalArgumentException("\"nickName\"은 ${NICKNAME_MAX_LENGTH}자를 초과할 수 없습니다.")
         }
     }
 }

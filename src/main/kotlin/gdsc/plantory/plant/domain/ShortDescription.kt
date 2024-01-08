@@ -24,7 +24,7 @@ class ShortDescription(
         }
 
         if (value.length > DESCRIPTION_MAX_LENGTH) {
-            throw IllegalArgumentException("\"shortDescription\"은 16자를 초과할 수 없습니다.")
+            throw IllegalArgumentException("\"shortDescription\"은 ${DESCRIPTION_MAX_LENGTH}자를 초과할 수 없습니다.")
         }
     }
 }
