@@ -14,10 +14,10 @@ class DeviceHeaderExtractorTest {
         // given
         val request = mockk<NativeWebRequest>()
         val expected = "shine"
-        every { request.getHeader("Device-Id") } returns expected
+        every { request.getHeader("Device-Token") } returns expected
 
         // when
-        val actual = DeviceHeaderExtractor.extractDeviceId(request)
+        val actual = DeviceHeaderExtractor.extractDeviceToken(request)
 
         // then
         assertThat(actual).isEqualTo(expected)
@@ -27,9 +27,9 @@ class DeviceHeaderExtractorTest {
     fun `디바이스 ID가 존재하지 않으면 예외를 반환한다`() {
         // given
         val request = mockk<NativeWebRequest>()
-        every { request.getHeader("Device-Id") } returns null
+        every { request.getHeader("Device-Token") } returns null
 
         // when, then
-        assertThrows<IllegalArgumentException> { DeviceHeaderExtractor.extractDeviceId(request) }
+        assertThrows<IllegalArgumentException> { DeviceHeaderExtractor.extractDeviceToken(request) }
     }
 }

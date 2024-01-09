@@ -19,6 +19,6 @@ class DeviceUserResolver : HandlerMethodArgumentResolver {
         webRequest: NativeWebRequest,
         binderFactory: WebDataBinderFactory?
     ): Any? {
-        return DeviceHeaderExtractor.extractDeviceId(webRequest)
+        return DeviceHeaderExtractor.extractDeviceToken(webRequest)
     }
 }
