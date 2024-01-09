@@ -10,7 +10,7 @@ import org.springframework.web.method.support.ModelAndViewContainer
 class DeviceUserResolver : HandlerMethodArgumentResolver {
 
     override fun supportsParameter(parameter: org.springframework.core.MethodParameter): Boolean {
-        return parameter.hasParameterAnnotation(AccessDeviceId::class.java)
+        return parameter.hasParameterAnnotation(AccessDeviceToken::class.java)
     }
 
     override fun resolveArgument(

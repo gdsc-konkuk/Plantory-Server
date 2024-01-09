@@ -9,7 +9,7 @@ class CommonStep {
 
     companion object {
 
-        fun 응답_확인(폴더_생성_요청_응답: ExtractableResponse<Response>, httpStatus: HttpStatus) =
-            assertThat(폴더_생성_요청_응답.statusCode()).isEqualTo(httpStatus.value())
+        fun 응답_확인(응답: ExtractableResponse<Response>, httpStatus: HttpStatus) =
+            assertThat(응답.statusCode()).isEqualTo(httpStatus.value())
     }
 }

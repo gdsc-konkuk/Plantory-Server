@@ -14,10 +14,13 @@ class MemberAcceptanceTest : AcceptanceTest() {
 
     @Test
     fun `회원 가입`() {
+        // given
         val 회원_가입_정보 = MemberSignUpRequest("device-token")
 
+        // when
         val 회원_가입_응답 = 회원_가입_요청(회원_가입_정보)
 
+        // then
         응답_확인(회원_가입_응답, HttpStatus.OK)
     }
 
