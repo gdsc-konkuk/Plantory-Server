@@ -1,9 +1,11 @@
 package gdsc.plantory.plant.domain
 
 import jakarta.persistence.Column
+import jakarta.persistence.Embeddable
 
 private const val NICKNAME_MAX_LENGTH = 16
 
+@Embeddable
 class NickName(
     @Column(name = "nickname", nullable = false)
     private var _value: String,
