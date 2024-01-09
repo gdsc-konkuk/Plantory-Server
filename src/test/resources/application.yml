@@ -1,8 +1,8 @@
 spring:
   datasource:
     url: jdbc:tc:mysql:8:///plantory?TC_REUSABLE=true
-    username: test
-    password: test1234
+    username: plantory
+    password: plantory1234
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
     p6spy:
       enable-logging: true
