@@ -16,3 +16,7 @@ spring:
 local:
   image:
     root: src/test/resources
+
+companionPlant:
+  image:
+    directory: test
