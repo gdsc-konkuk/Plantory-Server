@@ -1,7 +1,8 @@
 package gdsc.plantory.plant.service
 
 import gdsc.plantory.common.support.photo.PhotoLocalManager
-import gdsc.plantory.plant.domain.CompanionPlant
+import gdsc.plantory.member.domain.MemberRepository
+import gdsc.plantory.member.domain.findByDeviceTokenOrThrow
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
@@ -18,23 +19,16 @@ class PlantService(
     private var companionPlantImageDirectory: String,
     private val companionPlantRepository: CompanionPlantRepository,
     private val plantInformationRepository: PlantInformationRepository,
-    private val photoLocalManager: PhotoLocalManager
+    private val photoLocalManager: PhotoLocalManager,
+    private val memberRepository: MemberRepository,
 ) {
 
     fun create(request: CompanionPlantCreateRequest, image: MultipartFile?, deviceToken: String) {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
         val plantInformation = plantInformationRepository.findByIdOrThrow(request.plantInformationId)
-
         val imagePath: String = saveImageAndGetPath(image, plantInformation.getImageUrl)
 
-        val companionPlant = CompanionPlant(
-            _imageUrl = imagePath,
-            _shortDescription = request.shortDescription,
-            _nickname = request.nickname,
-            nextWaterDate = request.lastWaterDate.plusDays(plantInformation.getWaterCycle.toLong()),
-            lastWaterDate = request.lastWaterDate,
-            waterCycle = plantInformation.getWaterCycle,
-            birthDate = request.birthDate
-        )
+        val companionPlant = request.toEntity(imagePath, findMember.getId, plantInformation.getWaterCycle)
 
         companionPlantRepository.save(companionPlant)
     }
