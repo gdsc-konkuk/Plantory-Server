@@ -12,3 +12,7 @@ spring:
     password: ${DB_PASSWORD}
     username: ${DB_USER}
     url: ${DB_URL}
+
+local:
+  image:
+    root: src/test/resources
