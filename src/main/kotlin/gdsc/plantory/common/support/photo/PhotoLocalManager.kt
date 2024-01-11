@@ -16,12 +16,12 @@ class PhotoLocalManager(
         private const val SLASH = "/"
     }
 
-    fun upload(multipartFile: MultipartFile, workingDirectory: String): String {
+    fun upload(multipartFile: MultipartFile, workingDirectory: String): String? {
         require(!(multipartFile.isEmpty)) { "이미지 파일이 존재하지 않습니다" }
         return uploadPhoto(multipartFile, workingDirectory)
     }
 
-    private fun uploadPhoto(multipartFile: MultipartFile, workingDirectory: String): String {
+    private fun uploadPhoto(multipartFile: MultipartFile, workingDirectory: String): String? {
         return try {
             val fileName: String = PhotoNameGenerator.of(multipartFile.originalFilename)
             val uploadDirectory = loadDirectory(getLocalDirectoryPath(workingDirectory))

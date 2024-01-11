@@ -22,4 +22,7 @@ class WaterCycle(
             throw IllegalArgumentException("\"waterCycle\"은 양의 정수여야 합니다.")
         }
     }
+
+    val springWaterCycle: Int
+        get() = this.spring
 }

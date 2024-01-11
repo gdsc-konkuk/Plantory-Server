@@ -67,6 +67,13 @@ class PlantInformation(
         _waterCycleSpring, _waterCycleSummer, _waterCycleAutumn, _waterCycleWinter
     )
 
+    val getImageUrl: String
+        get() = this.imageUrl.value
+
+    // TODO : 향후 계절별로 반환하는 사이클이 달라야함, 지금은 그냥 봄으로 고정
+    val getWaterCycle: Int
+        get() = this.waterCycle.springWaterCycle
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
