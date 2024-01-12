@@ -19,4 +19,4 @@ local:
 
 companionPlant:
   image:
-    directory: test
+    directory: photos/companionPlant

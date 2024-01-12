@@ -10,18 +10,20 @@ import java.io.IOException
 class PhotoLocalManager(
     @Value("\${local.image.root}")
     private val localPath: String,
+    @Value("\${companionPlant.image.directory}")
+    private var workingDirectory: String,
 ) {
 
     companion object {
         private const val SLASH = "/"
     }
 
-    fun upload(multipartFile: MultipartFile, workingDirectory: String): String? {
+    fun upload(multipartFile: MultipartFile): String? {
         require(!(multipartFile.isEmpty)) { "이미지 파일이 존재하지 않습니다" }
-        return uploadPhoto(multipartFile, workingDirectory)
+        return uploadPhoto(multipartFile)
     }
 
-    private fun uploadPhoto(multipartFile: MultipartFile, workingDirectory: String): String? {
+    private fun uploadPhoto(multipartFile: MultipartFile): String? {
         return try {
             val fileName: String = PhotoNameGenerator.of(multipartFile.originalFilename)
             val uploadDirectory = loadDirectory(getLocalDirectoryPath(workingDirectory))

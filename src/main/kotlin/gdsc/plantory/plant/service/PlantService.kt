@@ -7,7 +7,6 @@ import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
@@ -15,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile
 @Service
 @Transactional
 class PlantService(
-    @Value("\${companionPlant.image.directory}")
-    private var companionPlantImageDirectory: String,
     private val companionPlantRepository: CompanionPlantRepository,
     private val plantInformationRepository: PlantInformationRepository,
     private val photoLocalManager: PhotoLocalManager,
@@ -34,7 +31,6 @@ class PlantService(
     }
 
     private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {
-        if (image == null) return defaultUrl
-        return photoLocalManager.upload(image, companionPlantImageDirectory)!!
+        return image?.let { photoLocalManager.upload(image) } ?: return defaultUrl
     }
 }

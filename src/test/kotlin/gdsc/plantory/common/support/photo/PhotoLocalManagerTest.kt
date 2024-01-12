@@ -26,7 +26,7 @@ class PhotoLocalManagerTest(
         // when
         var imageUrl: String? = null
         Assertions.assertThatCode {
-            imageUrl = photoManager.upload(multipartFile, imagePath)
+            imageUrl = photoManager.upload(multipartFile)
         }.doesNotThrowAnyException()
 
         // then
