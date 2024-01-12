@@ -14,3 +14,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+local:
+  image:
+    root: src/test/resources
+
+companionPlant:
+  image:
+    directory: photos/companionPlant
