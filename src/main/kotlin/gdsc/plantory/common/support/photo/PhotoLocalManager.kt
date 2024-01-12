@@ -6,6 +6,8 @@ import org.springframework.web.multipart.MultipartFile
 import java.io.File
 import java.io.IOException
 
+private const val SLASH = "/"
+
 @Component
 class PhotoLocalManager(
     @Value("\${local.image.root}")
@@ -13,10 +15,6 @@ class PhotoLocalManager(
     @Value("\${companionPlant.image.directory}")
     private var workingDirectory: String,
 ) {
-
-    companion object {
-        private const val SLASH = "/"
-    }
 
     fun upload(multipartFile: MultipartFile): String? {
         require(!(multipartFile.isEmpty)) { "이미지 파일이 존재하지 않습니다" }
