@@ -2,7 +2,6 @@ package gdsc.plantory.common.support.photo
 
 import gdsc.plantory.fixture.FileFixture
 import gdsc.plantory.util.ImageCleanerExtension
-import org.assertj.core.api.Assertions
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.extension.ExtendWith
@@ -24,10 +23,7 @@ class PhotoLocalManagerTest(
         val imagePath: String = FileFixture.IMAGE_PATH
 
         // when
-        var imageUrl: String? = null
-        Assertions.assertThatCode {
-            imageUrl = photoManager.upload(multipartFile)
-        }.doesNotThrowAnyException()
+        var imageUrl = photoManager.upload(multipartFile)
 
         // then
         assertThat(imageUrl).isNotBlank()

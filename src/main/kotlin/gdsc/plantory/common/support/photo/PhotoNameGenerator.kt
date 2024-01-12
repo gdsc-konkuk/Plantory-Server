@@ -1,7 +1,8 @@
 package gdsc.plantory.common.support.photo
 
 import org.springframework.util.StringUtils
-import java.util.*
+import java.util.Locale
+import java.util.UUID
 
 private const val UNDER_BAR: String = "_"
 private const val DOT: String = "."
@@ -25,7 +26,13 @@ object PhotoNameGenerator {
 
         val fileBaseName = UUID.randomUUID().toString().substring(UUID_BEGIN_INDEX, UUID_END_INDEX)
 
-        return fileBaseName + UNDER_BAR + System.currentTimeMillis() + DOT + extension
+        return StringBuilder()
+            .append(fileBaseName)
+            .append(UNDER_BAR)
+            .append(System.currentTimeMillis())
+            .append(DOT)
+            .append(extension)
+            .toString()
     }
 
     private fun validateFileName(fileName: String?) {
