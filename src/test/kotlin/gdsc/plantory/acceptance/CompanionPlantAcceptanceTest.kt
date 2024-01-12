@@ -1,6 +1,6 @@
 package gdsc.plantory.acceptance
 
-import gdsc.plantory.acceptance.CompanionPlantAcceptanceStep.Companion.반려_식물_등록_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_등록_요청
 import gdsc.plantory.fixture.CompanionPlantFixture
 import gdsc.plantory.util.AcceptanceTest
 import org.junit.jupiter.api.DisplayName

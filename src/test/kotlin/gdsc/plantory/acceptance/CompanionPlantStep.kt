@@ -10,7 +10,7 @@ import io.restassured.specification.MultiPartSpecification
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 
-class CompanionPlantAcceptanceStep {
+class CompanionPlantStep {
 
     companion object {
         fun 반려_식물_등록_요청(
