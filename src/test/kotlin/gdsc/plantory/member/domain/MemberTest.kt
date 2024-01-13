@@ -1,4 +1,4 @@
-package gdsc.plantory.plant.domain
+package gdsc.plantory.member.domain
 
 import gdsc.plantory.member.domain.Member
 import org.assertj.core.api.Assertions.assertThatCode
