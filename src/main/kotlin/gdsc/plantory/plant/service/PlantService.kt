@@ -3,6 +3,7 @@ package gdsc.plantory.plant.service
 import gdsc.plantory.common.support.photo.PhotoLocalManager
 import gdsc.plantory.member.domain.MemberRepository
 import gdsc.plantory.member.domain.findByDeviceTokenOrThrow
+import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
@@ -28,6 +29,11 @@ class PlantService(
         val companionPlant = request.toEntity(imagePath, findMember.getId, plantInformation.getWaterCycle)
 
         companionPlantRepository.save(companionPlant)
+    }
+
+    fun lookup(deviceToken: String): List<CompanionPlant> {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        return companionPlantRepository.findAllByMemberId(findMember.getId)
     }
 
     private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {

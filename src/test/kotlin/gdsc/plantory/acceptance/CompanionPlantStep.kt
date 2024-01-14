@@ -26,7 +26,22 @@ class CompanionPlantStep {
                 .header("Device-Token", deviceToken)
                 .log().all()
                 .`when`()
-                .post("/v1/plants")
+                .post("/api/v1/plants")
+                .then()
+                .log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+        }
+
+        fun 반려_식물_조회_요청(
+            deviceToken: String,
+        ): ExtractableResponse<Response> {
+            return RestAssured
+                .given()
+                .header("Device-Token", deviceToken)
+                .log().all()
+                .`when`()
+                .get("/api/v1/plants")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.OK.value())

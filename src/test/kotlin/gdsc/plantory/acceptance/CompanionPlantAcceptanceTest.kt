@@ -1,7 +1,10 @@
 package gdsc.plantory.acceptance
 
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_등록_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_조회_요청
+import gdsc.plantory.acceptance.MemberStep.Companion.회원_가입_요청
 import gdsc.plantory.fixture.CompanionPlantFixture
+import gdsc.plantory.member.dto.MemberSignUpRequest
 import gdsc.plantory.util.AcceptanceTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -20,5 +23,17 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
 
         // then
         CommonStep.응답_확인(식물_등록_요청_응답, HttpStatus.OK)
+    }
+
+    @Test
+    fun `사용자의 반려식물 조회`() {
+        // given
+        회원_가입_요청(MemberSignUpRequest("device-token"))
+
+        // when
+        val 식물_조회_요청_응답 = 반려_식물_조회_요청("device-token")
+
+        // then
+        CommonStep.응답_확인(식물_조회_요청_응답, HttpStatus.OK)
     }
 }

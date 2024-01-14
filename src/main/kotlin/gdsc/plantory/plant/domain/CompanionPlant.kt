@@ -60,6 +60,21 @@ class CompanionPlant(
     @Embedded
     private val histories: Histories = Histories()
 
+    val getId: Long
+        get() = this.id
+
+    val getImageUrl: String
+        get() = this.imageUrl.value
+
+    val getNickName: String
+        get() = this.nickname.value
+
+    val getSortDescription: String
+        get() = this.shortDescription.value
+
+    val getBirthDate: LocalDate
+        get() = this.birthDate ?: this.createAt!!.toLocalDate()
+    
     fun saveRecord(comment: String, imageUrl: String? = null) =
         this.records.add(PlantRecord(imageUrl, comment, this))
 
