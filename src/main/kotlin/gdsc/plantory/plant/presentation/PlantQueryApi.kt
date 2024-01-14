@@ -17,6 +17,14 @@ class PlantQueryApi(
     @GetMapping()
     fun lookup(@AccessDeviceToken deviceToken: String): ResponseEntity<List<CompanionPlantResponse>> {
         val companionPlants = plantService.lookup(deviceToken)
-        return ResponseEntity.ok().body(companionPlants.map { it.value })
+        return ResponseEntity.ok().body(companionPlants.map {
+            CompanionPlantResponse(
+                it.getId,
+                it.getImageUrl,
+                it.getNickName,
+                it.getSortDescription,
+                it.getBirthDate
+            )
+        })
     }
 }
