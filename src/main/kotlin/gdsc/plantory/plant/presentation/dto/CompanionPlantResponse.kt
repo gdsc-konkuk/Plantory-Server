@@ -1,16 +1,13 @@
 package gdsc.plantory.plant.presentation.dto
 
-import java.time.LocalDate
+import gdsc.plantory.plant.domain.CompanionPlant
 
 class CompanionPlantResponse(
-    val id: Long,
-    val imageUrl: String,
-    val nickname: String,
-    val shortDescription: String,
-    val memberId: Long,
-    val plantInformationId: Long,
-    val nextWaterDate: LocalDate,
-    var lastWaterDate: LocalDate,
-    var waterCycle: Int,
-    val birthDate: LocalDate,
-)
+    private val entity: CompanionPlant
+) {
+    val id = entity.getId
+    val imageUrl = entity.getImageUrl
+    val nickname = entity.getNickName
+    val shortDescription = entity.getSortDescription
+    val birthDate = entity.getBirthDate
+}
