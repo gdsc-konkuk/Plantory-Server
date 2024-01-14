@@ -1,7 +1,6 @@
 package gdsc.plantory.acceptance
 
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
-import gdsc.plantory.plant.presentation.dto.CompanionPlantLookupRequest
 import io.restassured.RestAssured
 import io.restassured.builder.MultiPartSpecBuilder
 import io.restassured.mapper.ObjectMapperType
@@ -27,7 +26,7 @@ class CompanionPlantStep {
                 .header("Device-Token", deviceToken)
                 .log().all()
                 .`when`()
-                .post("/v1/plants")
+                .post("/api/v1/plants")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.OK.value())
@@ -35,19 +34,14 @@ class CompanionPlantStep {
         }
 
         fun 반려_식물_조회_요청(
-            createRequest: CompanionPlantLookupRequest,
             deviceToken: String,
         ): ExtractableResponse<Response> {
-            val multipartData: MultiPartSpecification = getMultiPartSpecification(createRequest)
-
             return RestAssured
                 .given()
-                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
-                .multiPart(multipartData)
                 .header("Device-Token", deviceToken)
                 .log().all()
                 .`when`()
-                .get("/v1/plants")
+                .get("/api/v1/plants")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.OK.value())

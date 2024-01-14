@@ -1,6 +1,7 @@
 package gdsc.plantory.plant.domain
 
 import gdsc.plantory.common.domain.BaseTimeEntity
+import gdsc.plantory.plant.presentation.dto.CompanionPlantResponse
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
@@ -44,6 +45,20 @@ class CompanionPlant(
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private val id: Long = 0L,
 ) : BaseTimeEntity() {
+
+    val value: CompanionPlantResponse
+        get() = CompanionPlantResponse(
+            this.id,
+            this.imageUrl.value,
+            this.nickname.value,
+            this.shortDescription.value,
+            this.memberId,
+            this.plantInformationId,
+            this.nextWaterDate,
+            this.lastWaterDate,
+            this.waterCycle,
+            this.birthDate ?: this.createAt!!.toLocalDate(),
+        )
 
     @Embedded
     private val imageUrl: ImageUrl = ImageUrl(_imageUrl)

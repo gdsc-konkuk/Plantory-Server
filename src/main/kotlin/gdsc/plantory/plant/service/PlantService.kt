@@ -6,7 +6,6 @@ import gdsc.plantory.member.domain.findByDeviceTokenOrThrow
 import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
-import gdsc.plantory.plant.presentation.dto.CompanionPlantLookupRequest
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -32,12 +31,12 @@ class PlantService(
         companionPlantRepository.save(companionPlant)
     }
 
-    private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {
-        return image?.let { photoLocalManager.upload(image) } ?: return defaultUrl
+    fun lookup(deviceToken: String): List<CompanionPlant> {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        return companionPlantRepository.findAllByMemberId(findMember.getId)
     }
 
-    fun lookup(request: CompanionPlantLookupRequest, deviceToken: String): MutableList<CompanionPlant> {
-        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
-        return companionPlantRepository.findAllByMemberid(findMember.getId)
+    private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {
+        return image?.let { photoLocalManager.upload(image) } ?: return defaultUrl
     }
 }
