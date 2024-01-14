@@ -30,3 +30,7 @@ data class CompanionPlantCreateRequest(
         )
     }
 }
+
+data class CompanionPlantLookupRequest(
+    val memberId: Long
+)
