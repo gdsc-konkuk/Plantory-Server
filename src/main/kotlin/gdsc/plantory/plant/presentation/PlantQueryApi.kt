@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 
 @RestController
-@RequestMapping("/v1/plants")
+@RequestMapping("/api/v1/plants")
 class PlantQueryApi(
     private val plantService: PlantService
 ) {
