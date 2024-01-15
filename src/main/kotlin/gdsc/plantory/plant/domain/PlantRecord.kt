@@ -5,6 +5,7 @@ import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
 import jakarta.persistence.Entity
+import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
@@ -20,7 +21,7 @@ class PlantRecord(
 
     _comment: String,
 
-    @ManyToOne(cascade = [CascadeType.PERSIST])
+    @ManyToOne(cascade = [CascadeType.PERSIST], fetch = FetchType.LAZY)
     @JoinColumn(name = "companion_plant_id")
     private val companionPlant: CompanionPlant? = null,
 
