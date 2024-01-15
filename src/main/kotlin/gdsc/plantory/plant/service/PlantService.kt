@@ -50,7 +50,6 @@ class PlantService(
             .toList()
     }
 
-    @Transactional
     fun registerRecord(
         companionPlantId: Long,
         request: PlantRecordCreateRequest,
@@ -62,6 +61,7 @@ class PlantService(
         val imagePath: String = saveImageAndGetPath(image, companionPlant.getImageUrl)
 
         companionPlant.saveRecord(request.comment, imagePath)
+        companionPlant.saveHistory(HistoryType.RECORDING)
     }
 
     private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {
