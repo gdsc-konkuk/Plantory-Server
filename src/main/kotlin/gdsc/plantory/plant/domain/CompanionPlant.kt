@@ -88,7 +88,7 @@ class CompanionPlant(
         get() = this.waterCycle
 
     val getBirthDate: LocalDate
-        get() = LocalDate.from(this.birthDate ?: this.createAt!!.toLocalDate())
+        get() = LocalDate.from(this.birthDate ?: this.createAt)
 
     fun saveRecord(comment: String, imageUrl: String? = null) =
         this.records.add(PlantRecord(imageUrl, comment, this))
