@@ -1,10 +1,12 @@
 package gdsc.plantory.plant.domain
 
+import gdsc.plantory.fixture.CompanionPlantFixture
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatCode
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertAll
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.CsvSource
 import java.time.LocalDate
@@ -15,13 +17,29 @@ class CompanionPlantTest {
 
     @Test
     fun `반려식물 생성 테스트`() {
+        val lastWaterDate = LocalDate.now()
+
         assertThatCode {
             CompanionPlant(
                 "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-                "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7), 7
+                "나의 아기 선인장", "shine", lastWaterDate.plusDays(7), lastWaterDate, 7
             )
         }
             .doesNotThrowAnyException()
+    }
+
+    @Test
+    fun `잘못된 물준 기록으로 반려식물을 생성시 예외 발생`() {
+        val lastWaterDate = LocalDate.now()
+
+        assertThatThrownBy {
+            CompanionPlant(
+                "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
+                "나의 아기 선인장", "shine", lastWaterDate.minusDays(1), lastWaterDate, 7
+            )
+        }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("마지막으로 물 준 날짜는 다음에 물 줄 날짜보다 빠를 수 없습니다.")
     }
 
     @Test
@@ -29,7 +47,7 @@ class CompanionPlantTest {
         // given
         val companionPlant = CompanionPlant(
             "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-            "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7), 7
+            "나의 아기 선인장", "shine", LocalDate.now().plusDays(7), LocalDate.now(), 7
         )
 
         // when
@@ -45,7 +63,7 @@ class CompanionPlantTest {
         // given
         val companionPlant = CompanionPlant(
             "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-            "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7), 7
+            "나의 아기 선인장", "shine", LocalDate.now().plusDays(7), LocalDate.now(), 7
         )
 
         // when
@@ -65,7 +83,7 @@ class CompanionPlantTest {
         assertThatThrownBy {
             CompanionPlant(
                 "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-                "shortDescription", nickName, LocalDate.now(), LocalDate.now().plusDays(7),
+                "shortDescription", nickName, LocalDate.now().plusDays(7), LocalDate.now(),
                 7, LocalDate.of(2023, 1, 1)
             )
         }
@@ -82,7 +100,7 @@ class CompanionPlantTest {
         assertThatThrownBy {
             CompanionPlant(
                 "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-                tooLongDescription, "shine", LocalDate.now(), LocalDate.now().plusDays(7),
+                tooLongDescription, "shine", LocalDate.now().plusDays(7), LocalDate.now(),
                 7, LocalDate.of(2023, 1, 1)
             )
         }
@@ -96,7 +114,7 @@ class CompanionPlantTest {
         // given
         val companionPlant = CompanionPlant(
             "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-            "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7),
+            "나의 아기 선인장", "shine", LocalDate.now().plusDays(7), LocalDate.now(),
             7, LocalDate.of(2023, 1, 1)
         )
 
@@ -112,7 +130,7 @@ class CompanionPlantTest {
         // given
         val companionPlant = CompanionPlant(
             "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-            "나의 아기 선인장", "shine", LocalDate.now(), LocalDate.now().plusDays(7),
+            "나의 아기 선인장", "shine", LocalDate.now().plusDays(7), LocalDate.now(),
             7, LocalDate.of(2023, 1, 1)
         )
 
@@ -122,5 +140,35 @@ class CompanionPlantTest {
         }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessageContaining("함께한 날은 음수가 될 수 없습니다.")
+    }
+
+    @Test
+    fun `물을 주면 다음에 물줄 주어야 할 날짜와 마지막으로 물 준 날짜 변경`() {
+        // given
+        val companionPlant: CompanionPlant = CompanionPlantFixture.덕구리난
+        val currentWaterDate = LocalDate.now()
+        val nextWaterDate = currentWaterDate.plusDays(companionPlant.getWaterCycle.toLong())
+
+        // when
+        companionPlant.saveHistory(HistoryType.WATER_CHANGE, currentWaterDate)
+
+        assertAll(
+            { assertThat(companionPlant.getNextWaterDate).isEqualTo(nextWaterDate) },
+            { assertThat(companionPlant.getLastWaterDate).isEqualTo(currentWaterDate) }
+        )
+    }
+
+    @Test
+    fun `당일이 아닌 날에 물을 줄려 하는 경우 예외 발생`() {
+        // given
+        val companionPlant: CompanionPlant = CompanionPlantFixture.덕구리난
+        val currentWaterDate = LocalDate.of(2024, 1, 10)
+
+        // when, then
+        assertThatThrownBy {
+            companionPlant.saveHistory(HistoryType.WATER_CHANGE, currentWaterDate.minusDays(1))
+        }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("물을 줄 날짜는 오늘 날짜여야 합니다.")
     }
 }

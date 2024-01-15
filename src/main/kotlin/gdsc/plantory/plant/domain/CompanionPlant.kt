@@ -60,11 +60,23 @@ class CompanionPlant(
     @Embedded
     private val histories: Histories = Histories()
 
+    init {
+        if (lastWaterDate.isAfter(nextWaterDate)) {
+            throw IllegalArgumentException("마지막으로 물 준 날짜는 다음에 물 줄 날짜보다 빠를 수 없습니다.")
+        }
+    }
+
     val getId: Long
         get() = this.id
 
     val getImageUrl: String
         get() = this.imageUrl.value
+
+    val getNextWaterDate: LocalDate
+        get() = LocalDate.from(this.nextWaterDate)
+
+    val getLastWaterDate: LocalDate
+        get() = LocalDate.from(this.lastWaterDate)
 
     val getNickName: String
         get() = this.nickname.value
@@ -72,14 +84,27 @@ class CompanionPlant(
     val getSortDescription: String
         get() = this.shortDescription.value
 
+    val getWaterCycle: Int
+        get() = this.waterCycle
+
     val getBirthDate: LocalDate
-        get() = this.birthDate ?: this.createAt!!.toLocalDate()
-    
+        get() = LocalDate.from(this.birthDate ?: this.createAt!!.toLocalDate())
+
     fun saveRecord(comment: String, imageUrl: String? = null) =
         this.records.add(PlantRecord(imageUrl, comment, this))
 
-    fun saveHistory(waterChange: HistoryType, date: LocalDate = LocalDate.now()) =
+    fun saveHistory(waterChange: HistoryType, date: LocalDate = LocalDate.now()) {
+        if (isNotCurrentDay(date)) {
+            throw IllegalArgumentException("물을 줄 날짜는 오늘 날짜여야 합니다.")
+        }
+
+        if (waterChange == HistoryType.WATER_CHANGE) {
+            this.lastWaterDate = date
+            this.nextWaterDate = date.plusDays(this.waterCycle.toLong())
+        }
+
         this.histories.add(History(waterChange, date, this))
+    }
 
     fun recordSize(): Int = this.records.size()
 
@@ -90,6 +115,8 @@ class CompanionPlant(
 
         return ChronoUnit.DAYS.between(birthDate, currentDate).toInt() + 1
     }
+
+    private fun isNotCurrentDay(date: LocalDate) = !date.isEqual(LocalDate.now())
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
