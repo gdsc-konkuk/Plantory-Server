@@ -8,6 +8,7 @@ plugins {
     kotlin("plugin.spring") version "1.9.21"
     kotlin("plugin.jpa") version "1.9.21"
     kotlin("plugin.allopen") version "1.9.21"
+    kotlin("plugin.noarg") version "1.9.21"
 }
 
 group = "gdsc"
@@ -17,6 +18,12 @@ allOpen {
     annotation("jakarta.persistence.Entity")
     annotation("jakarta.persistence.Embeddable")
     annotation("jakarta.persistence.MappedSuperclass")
+}
+
+noArg {
+    annotation("javax.persistence.Entity")
+    annotation("javax.persistence.MappedSuperclass")
+    annotation("javax.persistence.Embeddable")
 }
 
 java {

@@ -3,9 +3,11 @@ package gdsc.plantory.plant.service
 import gdsc.plantory.common.support.photo.PhotoLocalManager
 import gdsc.plantory.member.domain.MemberRepository
 import gdsc.plantory.member.domain.findByDeviceTokenOrThrow
-import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.domain.CompanionPlantRepository
+import gdsc.plantory.plant.domain.HistoryType
+import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
+import gdsc.plantory.plant.presentation.dto.CompanionPlantDto
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -31,9 +33,20 @@ class PlantService(
         companionPlantRepository.save(companionPlant)
     }
 
-    fun lookup(deviceToken: String): List<CompanionPlant> {
+    fun createHistory(plantId: Long, deviceToken: String, historyType: HistoryType) {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        val findPlant = companionPlantRepository.findByIdAndMemberIdOrThrow(plantId, findMember.getId)
+        findPlant.saveHistory(historyType)
+    }
+
+    @Transactional(readOnly = true)
+    fun lookupAllPlantsOfMember(deviceToken: String): List<CompanionPlantDto> {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+
         return companionPlantRepository.findAllByMemberId(findMember.getId)
+            .stream()
+            .map { CompanionPlantDto.from(it) }
+            .toList()
     }
 
     private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {
