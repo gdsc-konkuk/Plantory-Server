@@ -93,17 +93,17 @@ class CompanionPlant(
     fun saveRecord(comment: String, imageUrl: String? = null) =
         this.records.add(PlantRecord(imageUrl, comment, this))
 
-    fun saveHistory(waterChange: HistoryType, date: LocalDate = LocalDate.now()) {
+    fun saveHistory(historyType: HistoryType, date: LocalDate = LocalDate.now()) {
         if (isNotCurrentDay(date)) {
             throw IllegalArgumentException("물을 줄 날짜는 오늘 날짜여야 합니다.")
         }
 
-        if (waterChange == HistoryType.WATER_CHANGE) {
+        if (historyType == HistoryType.WATER_CHANGE) {
             this.lastWaterDate = date
             this.nextWaterDate = date.plusDays(this.waterCycle.toLong())
         }
 
-        this.histories.add(History(waterChange, date, this))
+        this.histories.add(History(historyType, date, this))
     }
 
     fun recordSize(): Int = this.records.size()
