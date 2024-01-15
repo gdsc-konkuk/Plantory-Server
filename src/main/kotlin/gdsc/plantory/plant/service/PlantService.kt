@@ -6,8 +6,11 @@ import gdsc.plantory.member.domain.findByDeviceTokenOrThrow
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
+import gdsc.plantory.plant.domain.findRecordByIdAndMemberIdAndDateOrThrow
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantDto
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordDto
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
@@ -62,6 +65,18 @@ class PlantService(
 
         companionPlant.saveRecord(request.comment, imagePath)
         companionPlant.saveHistory(HistoryType.RECORDING)
+    }
+
+    @Transactional(readOnly = true)
+    fun lookupPlantRecordOfDate(request: PlantRecordLookupRequest, deviceToken: String): PlantRecordDto {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        val findPlantRecord = companionPlantRepository.findRecordByIdAndMemberIdAndDateOrThrow(
+            request.companionPlantId,
+            findMember.getId,
+            request.recordDate
+        )
+
+        return PlantRecordDto.from(findPlantRecord)
     }
 
     private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {

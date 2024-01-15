@@ -14,6 +14,9 @@ class Comment(
         validateContent(content)
     }
 
+    val value: String
+        get() = this.content
+
     private fun validateContent(content: String) {
         if (content.isBlank()) {
             throw IllegalArgumentException("기록은 공백일 수 없습니다.")

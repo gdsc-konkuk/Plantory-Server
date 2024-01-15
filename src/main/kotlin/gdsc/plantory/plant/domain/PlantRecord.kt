@@ -37,6 +37,15 @@ class PlantRecord(
     @Embedded
     private val comment: Comment = Comment(_comment)
 
+    val getId: Long
+        get() = this.id
+
+    val getImageUrl: String
+        get() = this.imageUrl!!.value
+
+    val getComment: String
+        get() = this.comment.value
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
