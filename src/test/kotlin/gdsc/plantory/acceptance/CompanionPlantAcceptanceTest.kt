@@ -3,11 +3,13 @@ package gdsc.plantory.acceptance
 import gdsc.plantory.acceptance.CommonStep.Companion.응답_확인
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_등록_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_조회_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_등록_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_히스토리_생성_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.조회_응답_확인
 import gdsc.plantory.acceptance.MemberStep.Companion.회원_가입_요청
 import gdsc.plantory.fixture.CompanionPlantFixture
 import gdsc.plantory.member.dto.MemberSignUpRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
 import gdsc.plantory.util.AcceptanceTest
 import org.junit.jupiter.api.DisplayName
@@ -51,5 +53,17 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
 
         // then
         조회_응답_확인(식물_조회_요청_응답)
+    }
+
+    @Test
+    fun `반려식물 데일리 기록 등록`() {
+        // given
+        val createRequest = PlantRecordCreateRequest("오늘도 행복한 하루!")
+
+        // when
+        val 데일리_기록_등록_요청_응답 = 데일리_기록_등록_요청(createRequest, "device_id")
+
+        // then
+        CommonStep.응답_확인(데일리_기록_등록_요청_응답, HttpStatus.OK)
     }
 }

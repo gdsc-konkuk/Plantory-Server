@@ -1,6 +1,7 @@
 package gdsc.plantory.acceptance
 
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
 import io.restassured.RestAssured
 import io.restassured.builder.MultiPartSpecBuilder
@@ -76,6 +77,26 @@ class CompanionPlantStep {
                 .get("/api/v1/plants")
                 .then()
                 .log().all()
+                .extract()
+        }
+
+        fun 데일리_기록_등록_요청(
+            createRequest: PlantRecordCreateRequest,
+            deviceToken: String,
+        ): ExtractableResponse<Response> {
+            val multipartData: MultiPartSpecification = getMultiPartSpecification(createRequest)
+
+            return RestAssured
+                .given()
+                .contentType(MediaType.MULTIPART_FORM_DATA_VALUE)
+                .multiPart(multipartData)
+                .header("Device-Token", deviceToken)
+                .log().all()
+                .`when`()
+                .post("/api/v1/plants/${1}/records")
+                .then()
+                .log().all()
+                .statusCode(HttpStatus.OK.value())
                 .extract()
         }
 
