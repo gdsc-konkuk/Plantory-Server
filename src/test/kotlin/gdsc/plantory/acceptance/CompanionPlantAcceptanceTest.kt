@@ -4,15 +4,19 @@ import gdsc.plantory.acceptance.CommonStep.Companion.응답_확인
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_등록_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_조회_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_등록_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_조회_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_조회_응답_확인
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_히스토리_생성_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_조회_응답_확인
 import gdsc.plantory.fixture.CompanionPlantFixture.generateCompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.util.AcceptanceTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
+import java.time.LocalDate
 
 @DisplayName("인수 : CompanionPlant")
 class CompanionPlantAcceptanceTest : AcceptanceTest() {
@@ -60,5 +64,17 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
 
         // then
         응답_확인(데일리_기록_등록_요청_응답, HttpStatus.OK)
+    }
+
+    @Test
+    fun `반려식물 데일리 기록 조회`() {
+        // given
+        val 데일리_기록_조회_정보 = PlantRecordLookupRequest(1L, LocalDate.now())
+
+        // when
+        val 데일리_기록_조회_요청_응답 = 데일리_기록_조회_요청(데일리_기록_조회_정보, "device-token")
+
+        // then
+        데일리_기록_조회_응답_확인(데일리_기록_조회_요청_응답)
     }
 }

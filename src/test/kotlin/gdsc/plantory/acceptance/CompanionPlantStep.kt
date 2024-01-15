@@ -3,6 +3,7 @@ package gdsc.plantory.acceptance
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import io.restassured.RestAssured
 import io.restassured.builder.MultiPartSpecBuilder
 import io.restassured.mapper.ObjectMapperType
@@ -97,6 +98,32 @@ class CompanionPlantStep {
                 .log().all()
                 .statusCode(HttpStatus.OK.value())
                 .extract()
+        }
+
+        fun 데일리_기록_조회_요청(
+            request: PlantRecordLookupRequest,
+            deviceToken: String
+        ): ExtractableResponse<Response> {
+            return RestAssured
+                .given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Device-Token", deviceToken)
+                .log().all()
+                .body(request)
+                .`when`()
+                .get("/api/v1/plants/records")
+                .then()
+                .log().all()
+                .extract()
+        }
+
+        fun 데일리_기록_조회_응답_확인(request: ExtractableResponse<Response>) {
+            assertAll(
+                { assertThat(request.statusCode()).isEqualTo(HttpStatus.OK.value()) },
+                { assertThat(request.jsonPath().getString("id")).isNotBlank() },
+                { assertThat(request.jsonPath().getString("imageUrl")).isNotBlank() },
+                { assertThat(request.jsonPath().getString("comment")).isNotBlank() },
+            )
         }
 
         private fun getMultiPartSpecification(request: Any): MultiPartSpecification {
