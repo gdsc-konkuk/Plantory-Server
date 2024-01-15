@@ -8,6 +8,8 @@ import io.restassured.mapper.ObjectMapperType
 import io.restassured.response.ExtractableResponse
 import io.restassured.response.Response
 import io.restassured.specification.MultiPartSpecification
+import org.assertj.core.api.Assertions
+import org.junit.jupiter.api.assertAll
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
 
@@ -49,6 +51,20 @@ class CompanionPlantStep {
                 .log().all()
                 .extract()
 
+        fun 조회_응답_확인(식물_조회_요청_응답: ExtractableResponse<Response>) {
+            assertAll(
+                { Assertions.assertThat(식물_조회_요청_응답.statusCode()).isEqualTo(HttpStatus.OK.value()) },
+                { Assertions.assertThat(식물_조회_요청_응답.jsonPath().getString("companionPlants.id")).isNotBlank() },
+                { Assertions.assertThat(식물_조회_요청_응답.jsonPath().getString("companionPlants.imageUrl")).isNotBlank() },
+                { Assertions.assertThat(식물_조회_요청_응답.jsonPath().getString("companionPlants.nickname")).isNotBlank() },
+                {
+                    Assertions.assertThat(식물_조회_요청_응답.jsonPath().getString("companionPlants.shortDescription"))
+                        .isNotBlank()
+                },
+                { Assertions.assertThat(식물_조회_요청_응답.jsonPath().getString("companionPlants.birthDate")).isNotBlank() },
+            )
+        }
+
         fun 반려_식물_조회_요청(
             deviceToken: String,
         ): ExtractableResponse<Response> {
@@ -60,7 +76,6 @@ class CompanionPlantStep {
                 .get("/api/v1/plants")
                 .then()
                 .log().all()
-                .statusCode(HttpStatus.OK.value())
                 .extract()
         }
 

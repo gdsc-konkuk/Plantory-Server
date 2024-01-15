@@ -25,7 +25,7 @@ class DatabaseLoader(
     fun loadData() {
         log.info("[call DataLoader]")
 
-        memberRepository.save(Member("device_id"))
+        val member = memberRepository.save(Member("device-token", 1L))
 
         val plantInformation = plantInformationRepository.save(
             PlantInformation(
@@ -49,19 +49,30 @@ class DatabaseLoader(
             )
         )
 
-        companionPlantRepository.save(
-            CompanionPlant(
-                _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
-                _shortDescription = "덕구리난은 덕구리난과!",
-                _nickname = "덕구리난",
-                nextWaterDate = LocalDate.now().plusDays(3),
-                lastWaterDate = LocalDate.now(),
-                waterCycle = 3,
-                plantInformationId = plantInformation.getId,
-                memberId = 1L,
-                id = 1L,
-            )
+        val companionPlant1 = CompanionPlant(
+            _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
+            _shortDescription = "덕구리난은 덕구리난과!",
+            _nickname = "덕구리난1",
+            nextWaterDate = LocalDate.now().plusDays(3),
+            lastWaterDate = LocalDate.now(),
+            waterCycle = 3,
+            plantInformationId = plantInformation.getId,
+            memberId = member.getId,
+            id = 1L,
         )
+
+        val companionPlant2 = CompanionPlant(
+            _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
+            _shortDescription = "덕구리난은 덕구리난과!",
+            _nickname = "덕구리난2",
+            nextWaterDate = LocalDate.now().plusDays(3),
+            lastWaterDate = LocalDate.now(),
+            waterCycle = 3,
+            plantInformationId = plantInformation.getId,
+            memberId = member.getId,
+            id = 2L,
+        )
+        companionPlantRepository.saveAll(listOf(companionPlant1, companionPlant2))
 
         log.info("[init complete DataLoader]")
     }
