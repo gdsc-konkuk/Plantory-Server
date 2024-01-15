@@ -67,6 +67,9 @@ class PlantInformation(
         _waterCycleSpring, _waterCycleSummer, _waterCycleAutumn, _waterCycleWinter
     )
 
+    val getId: Long
+        get() = this.id
+
     val getImageUrl: String
         get() = this.imageUrl.value
 

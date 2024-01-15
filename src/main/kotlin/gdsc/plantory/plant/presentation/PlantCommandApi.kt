@@ -1,11 +1,15 @@
 package gdsc.plantory.plant.presentation
 
+import BadRequestException
 import gdsc.plantory.common.support.AccessDeviceToken
+import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
+import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
 import gdsc.plantory.plant.service.PlantService
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
@@ -24,6 +28,18 @@ class PlantCommandApi(
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
         plantService.create(request, image, deviceToken)
+        return ResponseEntity.ok().build()
+    }
+
+    @PostMapping("/histories", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun createHistory(
+        @RequestBody request: CompanionPlantHistoryRequest,
+        @AccessDeviceToken deviceToken: String,
+    ): ResponseEntity<Unit> {
+        val historyType = HistoryType.byNameIgnoreCaseOrNull(request.historyType)
+            ?: throw BadRequestException("잘못된 히스토리 타입입니다.")
+
+        plantService.createHistory(request.companionPlantId, deviceToken, historyType);
         return ResponseEntity.ok().build()
     }
 }
