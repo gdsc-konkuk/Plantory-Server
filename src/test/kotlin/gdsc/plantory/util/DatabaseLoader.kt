@@ -2,18 +2,20 @@ package gdsc.plantory.util
 
 import gdsc.plantory.member.domain.Member
 import gdsc.plantory.member.domain.MemberRepository
+import gdsc.plantory.plant.domain.CompanionPlant
+import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plantInformation.domain.PlantInformation
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-
-private const val DEFAULT_FOLDER_NAME = "default"
+import java.time.LocalDate
 
 @Component
 class DatabaseLoader(
     private val memberRepository: MemberRepository,
     private val plantInformationRepository: PlantInformationRepository,
+    private val companionPlantRepository: CompanionPlantRepository,
 ) {
 
     companion object {
@@ -25,7 +27,7 @@ class DatabaseLoader(
 
         memberRepository.save(Member("device_id"))
 
-        plantInformationRepository.save(
+        val plantInformation = plantInformationRepository.save(
             PlantInformation(
                 _species = "덕구리난",
                 _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
@@ -43,6 +45,20 @@ class DatabaseLoader(
                 _waterCycleSummer = 3,
                 _waterCycleAutumn = 4,
                 _waterCycleWinter = 4,
+                id = 1L,
+            )
+        )
+
+        companionPlantRepository.save(
+            CompanionPlant(
+                _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
+                _shortDescription = "덕구리난은 덕구리난과!",
+                _nickname = "덕구리난",
+                nextWaterDate = LocalDate.now().plusDays(3),
+                lastWaterDate = LocalDate.now(),
+                waterCycle = 3,
+                plantInformationId = plantInformation.getId,
+                memberId = 1L,
                 id = 1L,
             )
         )

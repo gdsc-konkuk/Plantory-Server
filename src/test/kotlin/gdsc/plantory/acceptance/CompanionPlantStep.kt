@@ -1,6 +1,7 @@
 package gdsc.plantory.acceptance
 
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
+import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
 import io.restassured.RestAssured
 import io.restassured.builder.MultiPartSpecBuilder
 import io.restassured.mapper.ObjectMapperType
@@ -32,6 +33,21 @@ class CompanionPlantStep {
                 .statusCode(HttpStatus.OK.value())
                 .extract()
         }
+
+        fun 반려_식물_히스토리_생성_요청(
+            request: CompanionPlantHistoryRequest,
+            deviceToken: String,
+        ): ExtractableResponse<Response> =
+            RestAssured
+                .given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Device-Token", deviceToken)
+                .log().all()
+                .body(request)
+                .`when`().post("/api/v1/plants/histories")
+                .then()
+                .log().all()
+                .extract()
 
         fun 반려_식물_조회_요청(
             deviceToken: String,
