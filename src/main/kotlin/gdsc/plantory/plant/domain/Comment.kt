@@ -19,7 +19,7 @@ class Comment(
             throw IllegalArgumentException("기록은 공백일 수 없습니다.")
         }
 
-        if(content.length > MAX_CONTENT_LENGTH) {
+        if (content.length > MAX_CONTENT_LENGTH) {
             throw IllegalArgumentException("${MAX_CONTENT_LENGTH}자를 초과하는 기록은 저장할 수 없습니다.")
         }
     }

@@ -2,7 +2,7 @@ package gdsc.plantory.acceptance
 
 import gdsc.plantory.acceptance.CommonStep.Companion.응답_확인
 import gdsc.plantory.acceptance.MemberStep.Companion.회원_가입_요청
-import gdsc.plantory.member.dto.MemberSignUpRequest
+import gdsc.plantory.member.presentation.dto.MemberCreateRequest
 import gdsc.plantory.util.AcceptanceTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -14,7 +14,7 @@ class MemberAcceptanceTest : AcceptanceTest() {
     @Test
     fun `회원 가입`() {
         // given
-        val 회원_가입_정보 = MemberSignUpRequest("new-device-token")
+        val 회원_가입_정보 = MemberCreateRequest("new-device-token")
 
         // when
         val 회원_가입_응답 = 회원_가입_요청(회원_가입_정보)
@@ -31,10 +31,10 @@ class MemberAcceptanceTest : AcceptanceTest() {
     @Test
     fun `중복 회원 가입`() {
         // given
-        회원_가입_요청(MemberSignUpRequest("shine"))
+        회원_가입_요청(MemberCreateRequest("shine"))
 
         // when
-        val 회원_가입_응답 = 회원_가입_요청(MemberSignUpRequest("shine"))
+        val 회원_가입_응답 = 회원_가입_요청(MemberCreateRequest("shine"))
 
         // then
         응답_확인(회원_가입_응답, HttpStatus.CONFLICT)

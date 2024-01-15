@@ -26,10 +26,10 @@ class PlantService(
 
     fun create(request: CompanionPlantCreateRequest, image: MultipartFile?, deviceToken: String) {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
-        val plantInformation = plantInformationRepository.findByIdOrThrow(request.plantInformationId)
-        val imagePath: String = saveImageAndGetPath(image, plantInformation.getImageUrl)
+        val findPlantInformation = plantInformationRepository.findByIdOrThrow(request.plantInformationId)
+        val imagePath: String = saveImageAndGetPath(image, findPlantInformation.getImageUrl)
 
-        val companionPlant = request.toEntity(imagePath, findMember.getId, plantInformation.getWaterCycle)
+        val companionPlant = request.toEntity(imagePath, findMember.getId, findPlantInformation.getWaterCycle)
 
         companionPlantRepository.save(companionPlant)
     }
@@ -51,13 +51,13 @@ class PlantService(
     }
 
     fun registerRecord(
-        companionPlantId: Long,
         request: PlantRecordCreateRequest,
         image: MultipartFile?,
         deviceToken: String,
     ) {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
-        val companionPlant = companionPlantRepository.findByIdAndMemberIdOrThrow(companionPlantId, findMember.getId)
+        val companionPlant =
+            companionPlantRepository.findByIdAndMemberIdOrThrow(request.companionPlantId, findMember.getId)
         val imagePath: String = saveImageAndGetPath(image, companionPlant.getImageUrl)
 
         companionPlant.saveRecord(request.comment, imagePath)

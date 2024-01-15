@@ -1,5 +1,6 @@
 package gdsc.plantory.plant.presentation.dto
 
-data class PlantRecordCreateRequest (
+data class PlantRecordCreateRequest(
+    val companionPlantId: Long,
     val comment: String,
 )

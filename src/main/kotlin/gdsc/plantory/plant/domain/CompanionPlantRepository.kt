@@ -9,13 +9,17 @@ fun CompanionPlantRepository.findByIdAndMemberIdOrThrow(id: Long, memberId: Long
 
 interface CompanionPlantRepository : JpaRepository<CompanionPlant, Long> {
 
-    //    @Query("""
+//    XXX Spring Data JPA의 projection이 kotlin에서 잘 동작하지 않음
+//    @Query(
+//        """
 //        SELECT new gdsc.plantory.plant.common.dto.CompanionPlantDto(
 //            c.id, c.imageUrl._value, c.nickname._value, c.shortDescription._value, c.birthDate)
 //        FROM CompanionPlant c
 //        WHERE c.memberId = :memberId
-//    """)
+//    """
+//    )
 //    fun findAllPlantDtoByMemberId(memberId: Long): List<CompanionPlantDto>
+
     fun findAllByMemberId(memberId: Long): List<CompanionPlant>
     fun findByIdAndMemberId(id: Long, memberId: Long): CompanionPlant?
 }

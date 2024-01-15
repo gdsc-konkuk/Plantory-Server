@@ -53,7 +53,7 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
     @Test
     fun `반려식물 데일리 기록 등록`() {
         // given
-        val 데일리_기록_정보 = PlantRecordCreateRequest("오늘도 행복한 하루!")
+        val 데일리_기록_정보 = PlantRecordCreateRequest(1L, "오늘도 행복한 하루!")
 
         // when
         val 데일리_기록_등록_요청_응답 = 데일리_기록_등록_요청(데일리_기록_정보, "device-token")

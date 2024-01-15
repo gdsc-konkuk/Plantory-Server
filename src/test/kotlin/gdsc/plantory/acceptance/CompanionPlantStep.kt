@@ -92,7 +92,7 @@ class CompanionPlantStep {
                 .header("Device-Token", deviceToken)
                 .log().all()
                 .`when`()
-                .post("/api/v1/plants/${1}/records")
+                .post("/api/v1/plants/records")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.OK.value())
