@@ -9,5 +9,4 @@ class PlantoryApplicationTests {
     @Test
     fun contextLoads() {
     }
-
 }

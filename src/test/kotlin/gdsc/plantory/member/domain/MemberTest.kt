@@ -1,6 +1,5 @@
 package gdsc.plantory.member.domain
 
-import gdsc.plantory.member.domain.Member
 import org.assertj.core.api.Assertions.assertThatCode
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -9,7 +8,7 @@ import org.junit.jupiter.api.Test
 class MemberTest {
 
     @Test
-    fun `멤버 생성 테스트`() {
+    fun `멤버 생성`() {
         assertThatCode { Member("device_token") }.doesNotThrowAnyException()
     }
 }

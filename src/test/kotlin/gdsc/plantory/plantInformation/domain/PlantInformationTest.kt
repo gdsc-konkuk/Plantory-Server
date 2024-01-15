@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.CsvSource
 class PlantInformationTest {
 
     @Test
-    fun `식물정보 생성 테스트`() {
+    fun `식물정보 생성`() {
         assertThatCode {
             PlantInformation(
                 "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",

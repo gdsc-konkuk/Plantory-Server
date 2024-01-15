@@ -8,7 +8,6 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 
-
 @DisplayName("인수 : Member")
 class MemberAcceptanceTest : AcceptanceTest() {
 

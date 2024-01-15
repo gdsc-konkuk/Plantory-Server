@@ -19,7 +19,7 @@ class DatabaseLoader(
 ) {
 
     companion object {
-        private val log: Logger = LoggerFactory.getLogger(this.javaClass)!!
+        private val log: Logger = LoggerFactory.getLogger(this::class.java)!!
     }
 
     fun loadData() {
@@ -72,6 +72,7 @@ class DatabaseLoader(
             memberId = member.getId,
             id = 2L,
         )
+
         companionPlantRepository.saveAll(listOf(companionPlant1, companionPlant2))
 
         log.info("[init complete DataLoader]")

@@ -18,10 +18,10 @@ object CompanionPlantFixture {
         memberId = 1L,
     )
 
-    fun generatePetPlantCreateRequest(plantInformationId: Long): CompanionPlantCreateRequest {
+    fun generateCompanionPlantCreateRequest(nickname: String): CompanionPlantCreateRequest {
         return CompanionPlantCreateRequest(
-            plantInformationId = plantInformationId,
             nickname = "퐁퐁이",
+            plantInformationId = 1L,
             shortDescription = "퐁퐁이는 선인장 입니다!",
             birthDate = LocalDate.of(2024, 3, 8),
             lastWaterDate = LocalDate.of(2024, 3, 5),
