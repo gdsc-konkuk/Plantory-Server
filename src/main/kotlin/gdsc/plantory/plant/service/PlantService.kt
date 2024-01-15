@@ -8,6 +8,7 @@ import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantDto
+import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -47,6 +48,20 @@ class PlantService(
             .stream()
             .map { CompanionPlantDto.from(it) }
             .toList()
+    }
+
+    @Transactional
+    fun registerRecord(
+        companionPlantId: Long,
+        request: PlantRecordCreateRequest,
+        image: MultipartFile?,
+        deviceToken: String,
+    ) {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        val companionPlant = companionPlantRepository.findByIdAndMemberIdOrThrow(companionPlantId, findMember.getId)
+        val imagePath: String = saveImageAndGetPath(image, companionPlant.getImageUrl)
+
+        companionPlant.saveRecord(request.comment, imagePath)
     }
 
     private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {
