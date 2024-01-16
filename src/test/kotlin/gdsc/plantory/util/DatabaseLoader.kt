@@ -4,6 +4,7 @@ import gdsc.plantory.member.domain.Member
 import gdsc.plantory.member.domain.MemberRepository
 import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.domain.CompanionPlantRepository
+import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plantInformation.domain.PlantInformation
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import org.slf4j.Logger
@@ -74,6 +75,7 @@ class DatabaseLoader(
         )
 
         companionPlant2.saveRecord("test-record2", "https://test.com")
+        companionPlant2.saveHistory(HistoryType.RECORDING)
 
         companionPlantRepository.saveAll(listOf(companionPlant1, companionPlant2))
 

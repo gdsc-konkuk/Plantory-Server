@@ -1,6 +1,5 @@
 package gdsc.plantory.plant.service
 
-import ConflictException
 import gdsc.plantory.common.support.photo.PhotoLocalManager
 import gdsc.plantory.member.domain.MemberRepository
 import gdsc.plantory.member.domain.findByDeviceTokenOrThrow
@@ -8,7 +7,6 @@ import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
 import gdsc.plantory.plant.domain.findRecordByDateOrThrow
-import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantDto
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
@@ -19,7 +17,6 @@ import gdsc.plantory.plantInformation.domain.findByIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
-import java.time.LocalDate
 
 @Service
 @Transactional
@@ -66,8 +63,8 @@ class PlantService(
             companionPlantRepository.findByIdAndMemberIdOrThrow(request.companionPlantId, findMember.getId)
         val imagePath: String = saveImageAndGetPath(image, findCompanionPlant.getImageUrl)
 
-        validateDuplicatePlantRecord(request.companionPlantId, findMember.getId, LocalDate.now())
-        registerRecord(request.comment, imagePath, findCompanionPlant)
+        findCompanionPlant.saveRecord(request.comment, imagePath)
+        findCompanionPlant.saveHistory(HistoryType.RECORDING)
     }
 
     @Transactional(readOnly = true)
@@ -84,15 +81,5 @@ class PlantService(
 
     private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {
         return image?.let { photoLocalManager.upload(image) } ?: return defaultUrl
-    }
-
-    private fun validateDuplicatePlantRecord(companionPlantId: Long, memberId: Long, recordDate: LocalDate) {
-        companionPlantRepository.findRecordByDate(companionPlantId, memberId, recordDate)
-            ?.let { throw ConflictException() }
-    }
-
-    private fun registerRecord(comment: String, imagePath: String, companionPlant: CompanionPlant) {
-        companionPlant.saveRecord(comment, imagePath)
-        companionPlant.saveHistory(HistoryType.RECORDING)
     }
 }

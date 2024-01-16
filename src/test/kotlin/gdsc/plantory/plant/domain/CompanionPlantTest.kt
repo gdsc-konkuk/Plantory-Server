@@ -1,5 +1,6 @@
 package gdsc.plantory.plant.domain
 
+import ConflictException
 import gdsc.plantory.fixture.CompanionPlantFixture
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatCode
@@ -53,12 +54,30 @@ class CompanionPlantTest {
             "나의 아기 선인장", "shine", LocalDate.now().plusDays(7), LocalDate.now(), 7
         )
 
-        // when
-        companionPlant.saveRecord("test_comment", "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg")
-        companionPlant.saveRecord("test_comment")
+        // when, then
+        assertThatCode {
+            companionPlant.saveRecord(
+                "test_comment",
+                "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg"
+            )
+        }
+            .doesNotThrowAnyException()
+    }
 
-        // then
-        assertThat(companionPlant.recordSize()).isEqualTo(2)
+    @Test
+    fun `데일리 기록을 이미 등록한 날짜에 중복 등록하면 예외가 발생`() {
+        // given
+        val companionPlant = CompanionPlant(
+            "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
+            "나의 아기 선인장", "shine", LocalDate.now().plusDays(7), LocalDate.now(), 7
+        )
+        companionPlant.saveRecord("오늘의 기록!")
+
+        // when, then
+        assertThatThrownBy {
+            companionPlant.saveRecord("이것 역시 오늘의 기록!")
+        }
+            .isInstanceOf(ConflictException::class.java)
     }
 
     @Test

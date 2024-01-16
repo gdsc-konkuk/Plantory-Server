@@ -3,6 +3,7 @@ package gdsc.plantory.plant.domain
 import jakarta.persistence.CascadeType
 import jakarta.persistence.Embeddable
 import jakarta.persistence.OneToMany
+import java.time.LocalDate
 
 @Embeddable
 class PlantRecords {
@@ -11,6 +12,6 @@ class PlantRecords {
     private val plantRecords: MutableList<PlantRecord> = mutableListOf()
 
     fun add(plantRecord: PlantRecord) = this.plantRecords.add(plantRecord)
-
+    fun findByDate(date: LocalDate) = this.plantRecords.find { it.getDate == date }
     fun size(): Int = this.plantRecords.size
 }

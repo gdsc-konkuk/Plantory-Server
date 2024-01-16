@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.web.multipart.MultipartFile
 
-@DisplayName("유닛 : PhotoLocalManager")
+@DisplayName("통합 : PhotoLocalManager")
 @ExtendWith(ImageCleanerExtension::class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PhotoLocalManagerTest(

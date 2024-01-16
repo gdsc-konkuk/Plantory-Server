@@ -12,6 +12,7 @@ import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
+import java.time.LocalDate
 
 @Entity
 @Table(name = "PLANT_RECORD")
@@ -45,6 +46,9 @@ class PlantRecord(
 
     val getComment: String
         get() = this.comment.value
+
+    val getDate: LocalDate
+        get() = LocalDate.from(this.createAt)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
