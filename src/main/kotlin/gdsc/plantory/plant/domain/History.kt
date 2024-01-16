@@ -36,6 +36,15 @@ class History(
     private val id: Long = 0L,
 ) : BaseTimeEntity() {
 
+    val getId: Long
+        get() = this.id
+
+    val getType: HistoryType
+        get() = this.type
+
+    val getDate: LocalDate
+        get() = this.date
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false

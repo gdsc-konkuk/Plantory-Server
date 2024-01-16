@@ -77,6 +77,9 @@ class DatabaseLoader(
         companionPlant2.saveRecord("test-record2", "https://test.com")
         companionPlant2.saveHistory(HistoryType.RECORDING)
 
+        companionPlant2.saveHistory(HistoryType.POT_CHANGE)
+        companionPlant2.saveHistory(HistoryType.WATER_CHANGE)
+
         companionPlantRepository.saveAll(listOf(companionPlant1, companionPlant2))
 
         log.info("[init complete DataLoader]")

@@ -8,15 +8,19 @@ import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_�
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_조회_응답_확인
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_히스토리_생성_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_조회_응답_확인
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.히스토리_조회_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.히스토리_조회_응답_확인
 import gdsc.plantory.fixture.CompanionPlantFixture.generateCompanionPlantCreateRequest
 import gdsc.plantory.fixture.CompanionPlantFixture.generatePlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
+import gdsc.plantory.plant.presentation.dto.HistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.util.AcceptanceTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
 import java.time.LocalDate
+import java.time.YearMonth
 
 @DisplayName("인수 : CompanionPlant")
 class CompanionPlantAcceptanceTest : AcceptanceTest() {
@@ -93,5 +97,17 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
 
         // then
         데일리_기록_조회_응답_확인(데일리_기록_조회_요청_응답)
+    }
+
+    @Test
+    fun `반려식물 히스토리 조회`() {
+        // given
+        val 히스토리_조회_정보 = HistoriesLookupRequest(2L, YearMonth.parse("2024-01"))
+
+        // when
+        val 히스토리_조회_요청_응답 = 히스토리_조회_요청(히스토리_조회_정보, "device-token")
+
+        // then
+        히스토리_조회_응답_확인(히스토리_조회_요청_응답)
     }
 }
