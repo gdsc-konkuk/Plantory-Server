@@ -44,9 +44,7 @@ class PlantCommandApi(
         return ResponseEntity.ok().build()
     }
 
-    @PostMapping(
-        "/records", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE]
-    )
+    @PostMapping("/records", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE])
     fun registerRecord(
         @RequestPart(name = "request") request: PlantRecordCreateRequest,
         @RequestPart(name = "image", required = false) image: MultipartFile?,

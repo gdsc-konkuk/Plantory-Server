@@ -96,7 +96,6 @@ class CompanionPlantStep {
                 .post("/api/v1/plants/records")
                 .then()
                 .log().all()
-                .statusCode(HttpStatus.OK.value())
                 .extract()
         }
 

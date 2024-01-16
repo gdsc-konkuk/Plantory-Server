@@ -9,45 +9,15 @@ fun CompanionPlantRepository.findByIdAndMemberIdOrThrow(id: Long, memberId: Long
     return findByIdAndMemberId(id, memberId) ?: throw NotFoundException("식물 정보가 없어요")
 }
 
-fun CompanionPlantRepository.findRecordByIdAndMemberIdAndDateOrThrow(
-    id: Long,
-    memberId: Long,
-    date: LocalDate
-): PlantRecord {
-    val records = findAllRecordByIdAndMemberIdAndDate(id, memberId, date)
-
-    if (records.isEmpty()) {
-        throw NotFoundException("데일리 기록이 없어요")
-    }
-
-    return records[0]
+fun CompanionPlantRepository.findRecordByDateOrThrow(id: Long, memberId: Long, date: LocalDate): PlantRecord {
+    return findRecordByDate(id, memberId, date) ?: throw NotFoundException("데일리 기록이 없어요")
 }
 
 interface CompanionPlantRepository : JpaRepository<CompanionPlant, Long> {
 
-//    XXX Spring Data JPA의 projection이 kotlin에서 잘 동작하지 않음
-//    @Query(
-//        """
-//        SELECT new gdsc.plantory.plant.common.dto.CompanionPlantDto(
-//            c.id, c.imageUrl._value, c.nickname._value, c.shortDescription._value, c.birthDate)
-//        FROM CompanionPlant c
-//        WHERE c.memberId = :memberId
-//    """
-//    )
-//    fun findAllPlantDtoByMemberId(memberId: Long): List<CompanionPlantDto>
-
     fun findAllByMemberId(memberId: Long): List<CompanionPlant>
     fun findByIdAndMemberId(id: Long, memberId: Long): CompanionPlant?
 
-    // XXX Failed to convert from type [java.lang.Object[]] to type [gdsc.plantory.plant.domain.PlantRecord] for value [{...}]
-//    @Query(
-//        """
-//        SELECT *
-//        FROM plant_record r INNER JOIN companion_plant p ON r.companion_plant_id = p.id
-//        WHERE p.id = :id AND p.member_id = :memberId AND DATE(r.created_at) = :date
-//        """,
-//        nativeQuery = true
-//    )
     @Query(
         """
             SELECT record FROM PlantRecord record
@@ -57,9 +27,5 @@ interface CompanionPlantRepository : JpaRepository<CompanionPlant, Long> {
                 AND DATE(record.createAt) = :date
         """
     )
-    fun findAllRecordByIdAndMemberIdAndDate(
-        id: Long,
-        memberId: Long,
-        date: LocalDate
-    ): List<PlantRecord>
+    fun findRecordByDate(id: Long, memberId: Long, date: LocalDate): PlantRecord?
 }

@@ -73,8 +73,7 @@ class DatabaseLoader(
             id = 2L,
         )
 
-        companionPlant1.saveRecord("test-record1", "https://test.com")
-        companionPlant1.saveRecord("test-record2", "https://test.com")
+        companionPlant2.saveRecord("test-record2", "https://test.com")
 
         companionPlantRepository.saveAll(listOf(companionPlant1, companionPlant2))
 

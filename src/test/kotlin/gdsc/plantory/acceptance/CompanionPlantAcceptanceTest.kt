@@ -9,7 +9,7 @@ import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_�
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_히스토리_생성_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_조회_응답_확인
 import gdsc.plantory.fixture.CompanionPlantFixture.generateCompanionPlantCreateRequest
-import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
+import gdsc.plantory.fixture.CompanionPlantFixture.generatePlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.util.AcceptanceTest
@@ -24,7 +24,7 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
     @Test
     fun `반려식물 등록`() {
         // given
-        val 반려_식물_정보 = generateCompanionPlantCreateRequest("퐁퐁이")
+        val 반려_식물_정보 = generateCompanionPlantCreateRequest(1L)
 
         // when
         val 식물_등록_요청_응답 = 반려_식물_등록_요청(반려_식물_정보, "device-token")
@@ -57,7 +57,7 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
     @Test
     fun `반려식물 데일리 기록 등록`() {
         // given
-        val 데일리_기록_정보 = PlantRecordCreateRequest(1L, "오늘도 행복한 하루!")
+        val 데일리_기록_정보 = generatePlantRecordCreateRequest(1L)
 
         // when
         val 데일리_기록_등록_요청_응답 = 데일리_기록_등록_요청(데일리_기록_정보, "device-token")
@@ -66,10 +66,27 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
         응답_확인(데일리_기록_등록_요청_응답, HttpStatus.OK)
     }
 
+    /**
+     * given: 오늘 날짜에 데일리 기록을 작성한다
+     * when: 오늘 날짜에 데일리 기록을 한번더 작성한다
+     * then: Conflict 상태코드를 응답한다
+     */
+    @Test
+    fun `반려식물 데일리 기록 중복 등록`() {
+        // given
+        데일리_기록_등록_요청(generatePlantRecordCreateRequest(1L), "device-token")
+
+        // when
+        val 데일리_기록_등록_요청_응답 = 데일리_기록_등록_요청(generatePlantRecordCreateRequest(1L), "device-token")
+
+        // then
+        응답_확인(데일리_기록_등록_요청_응답, HttpStatus.CONFLICT)
+    }
+
     @Test
     fun `반려식물 데일리 기록 조회`() {
         // given
-        val 데일리_기록_조회_정보 = PlantRecordLookupRequest(1L, LocalDate.now())
+        val 데일리_기록_조회_정보 = PlantRecordLookupRequest(2L, LocalDate.now())
 
         // when
         val 데일리_기록_조회_요청_응답 = 데일리_기록_조회_요청(데일리_기록_조회_정보, "device-token")

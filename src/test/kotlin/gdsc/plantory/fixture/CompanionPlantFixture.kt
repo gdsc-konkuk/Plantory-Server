@@ -2,6 +2,7 @@ package gdsc.plantory.fixture
 
 import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import java.time.LocalDate
 
 object CompanionPlantFixture {
@@ -18,13 +19,20 @@ object CompanionPlantFixture {
         memberId = 1L,
     )
 
-    fun generateCompanionPlantCreateRequest(nickname: String): CompanionPlantCreateRequest {
+    fun generateCompanionPlantCreateRequest(plantInformationId: Long): CompanionPlantCreateRequest {
         return CompanionPlantCreateRequest(
             nickname = "퐁퐁이",
-            plantInformationId = 1L,
+            plantInformationId = plantInformationId,
             shortDescription = "퐁퐁이는 선인장 입니다!",
             birthDate = LocalDate.of(2024, 3, 8),
             lastWaterDate = LocalDate.of(2024, 3, 5),
+        )
+    }
+
+    fun generatePlantRecordCreateRequest(companionPlantId: Long): PlantRecordCreateRequest {
+        return PlantRecordCreateRequest(
+            companionPlantId = companionPlantId,
+            comment = "오늘도 즐거운 하루~!"
         )
     }
 }
