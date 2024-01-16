@@ -9,11 +9,11 @@ private const val LINK_CONTENT_LENGTH_LIMIT = 1000
 @Embeddable
 class ImageUrl(
     @Column(name = "image_url", length = LINK_CONTENT_LENGTH_LIMIT, nullable = false)
-        private val _value: String,
+    private val _value: String,
 ) {
 
     init {
-        if(_value.length > LINK_CONTENT_LENGTH_LIMIT) {
+        if (_value.length > LINK_CONTENT_LENGTH_LIMIT) {
             throw IllegalArgumentException("1000자를 초과하는 링크는 저장할 수 없습니다.")
         }
         if (!isValid(_value)) {
@@ -65,7 +65,7 @@ class ImageUrl(
 
     private fun patternMatches(link: String): Boolean {
         return compiledLinkPattern
-                .matcher(link)
-                .matches()
+            .matcher(link)
+            .matches()
     }
 }

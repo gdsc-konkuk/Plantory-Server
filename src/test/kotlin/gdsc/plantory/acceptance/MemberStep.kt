@@ -1,6 +1,6 @@
 package gdsc.plantory.acceptance
 
-import gdsc.plantory.member.dto.MemberSignUpRequest
+import gdsc.plantory.member.presentation.dto.MemberCreateRequest
 import io.restassured.RestAssured
 import io.restassured.response.ExtractableResponse
 import io.restassured.response.Response
@@ -10,7 +10,7 @@ class MemberStep {
 
     companion object {
 
-        fun 회원_가입_요청(request: MemberSignUpRequest): ExtractableResponse<Response> =
+        fun 회원_가입_요청(request: MemberCreateRequest): ExtractableResponse<Response> =
             RestAssured.given().log().all()
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .body(request)

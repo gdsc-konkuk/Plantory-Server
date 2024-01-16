@@ -9,7 +9,7 @@ import java.time.LocalDate
 class HistoryTest {
 
     @Test
-    fun `히스토리_생성_테스트`() {
+    fun `히스토리 생성`() {
         assertThatCode { History(HistoryType.WATER_CHANGE, LocalDate.now()) }.doesNotThrowAnyException()
     }
 }

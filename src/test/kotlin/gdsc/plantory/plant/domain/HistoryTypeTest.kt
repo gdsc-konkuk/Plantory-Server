@@ -1,11 +1,13 @@
 package gdsc.plantory.plant.domain
 
 import org.assertj.core.api.Assertions.assertThat
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.params.ParameterizedTest
 import org.junit.jupiter.params.provider.Arguments
 import org.junit.jupiter.params.provider.MethodSource
 import java.util.stream.Stream
 
+@DisplayName("도메인 : HistoryType")
 class HistoryTypeTest {
 
     @ParameterizedTest
@@ -17,7 +19,6 @@ class HistoryTypeTest {
         // then
         assertThat(result).isEqualTo(historyType)
     }
-
 
     companion object {
         @JvmStatic

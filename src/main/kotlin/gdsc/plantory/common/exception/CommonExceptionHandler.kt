@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice
 class CommonExceptionHandler {
 
     companion object {
-        private val log: Logger = LoggerFactory.getLogger(this.javaClass)!!
+        private val log: Logger = LoggerFactory.getLogger(this::class.java)!!
     }
 
     @ExceptionHandler

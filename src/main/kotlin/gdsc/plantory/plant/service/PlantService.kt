@@ -6,8 +6,12 @@ import gdsc.plantory.member.domain.findByDeviceTokenOrThrow
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
+import gdsc.plantory.plant.domain.findRecordByDateOrThrow
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantDto
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordDto
+import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -25,10 +29,10 @@ class PlantService(
 
     fun create(request: CompanionPlantCreateRequest, image: MultipartFile?, deviceToken: String) {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
-        val plantInformation = plantInformationRepository.findByIdOrThrow(request.plantInformationId)
-        val imagePath: String = saveImageAndGetPath(image, plantInformation.getImageUrl)
+        val findPlantInformation = plantInformationRepository.findByIdOrThrow(request.plantInformationId)
+        val imagePath: String = saveImageAndGetPath(image, findPlantInformation.getImageUrl)
 
-        val companionPlant = request.toEntity(imagePath, findMember.getId, plantInformation.getWaterCycle)
+        val companionPlant = request.toEntity(imagePath, findMember.getId, findPlantInformation.getWaterCycle)
 
         companionPlantRepository.save(companionPlant)
     }
@@ -47,6 +51,32 @@ class PlantService(
             .stream()
             .map { CompanionPlantDto.from(it) }
             .toList()
+    }
+
+    fun registerRecord(
+        request: PlantRecordCreateRequest,
+        image: MultipartFile?,
+        deviceToken: String,
+    ) {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        val findCompanionPlant =
+            companionPlantRepository.findByIdAndMemberIdOrThrow(request.companionPlantId, findMember.getId)
+        val imagePath: String = saveImageAndGetPath(image, findCompanionPlant.getImageUrl)
+
+        findCompanionPlant.saveRecord(request.comment, imagePath)
+        findCompanionPlant.saveHistory(HistoryType.RECORDING)
+    }
+
+    @Transactional(readOnly = true)
+    fun lookupPlantRecordOfDate(request: PlantRecordLookupRequest, deviceToken: String): PlantRecordDto {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        val findPlantRecord = companionPlantRepository.findRecordByDateOrThrow(
+            request.companionPlantId,
+            findMember.getId,
+            request.recordDate
+        )
+
+        return PlantRecordDto.from(findPlantRecord)
     }
 
     private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {

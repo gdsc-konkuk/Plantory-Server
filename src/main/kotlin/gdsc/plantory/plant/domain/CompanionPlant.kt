@@ -1,5 +1,6 @@
 package gdsc.plantory.plant.domain
 
+import ConflictException
 import gdsc.plantory.common.domain.BaseTimeEntity
 import jakarta.persistence.Column
 import jakarta.persistence.Embedded
@@ -90,8 +91,13 @@ class CompanionPlant(
     val getBirthDate: LocalDate
         get() = LocalDate.from(this.birthDate ?: this.createAt)
 
-    fun saveRecord(comment: String, imageUrl: String? = null) =
+    fun saveRecord(comment: String, imageUrl: String? = null, date: LocalDate = LocalDate.now()) {
+        if (this.records.isAlreadyRegisteredAt(date)) {
+            throw ConflictException()
+        }
+
         this.records.add(PlantRecord(imageUrl, comment, this))
+    }
 
     fun saveHistory(historyType: HistoryType, date: LocalDate = LocalDate.now()) {
         if (isNotCurrentDay(date)) {

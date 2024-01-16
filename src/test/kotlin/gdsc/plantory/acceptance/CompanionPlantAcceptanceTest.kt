@@ -2,28 +2,32 @@ package gdsc.plantory.acceptance
 
 import gdsc.plantory.acceptance.CommonStep.Companion.응답_확인
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_등록_요청
-import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_조회_요청
-import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_히스토리_생성_요청
-import gdsc.plantory.acceptance.CompanionPlantStep.Companion.조회_응답_확인
-import gdsc.plantory.acceptance.MemberStep.Companion.회원_가입_요청
-import gdsc.plantory.fixture.CompanionPlantFixture
-import gdsc.plantory.member.dto.MemberSignUpRequest
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_조회_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_등록_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_조회_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_조회_응답_확인
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_히스토리_생성_요청
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_조회_응답_확인
+import gdsc.plantory.fixture.CompanionPlantFixture.generateCompanionPlantCreateRequest
+import gdsc.plantory.fixture.CompanionPlantFixture.generatePlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.util.AcceptanceTest
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.http.HttpStatus
+import java.time.LocalDate
 
 @DisplayName("인수 : CompanionPlant")
 class CompanionPlantAcceptanceTest : AcceptanceTest() {
 
     @Test
-    fun `사용자의 반려 식물 등록`() {
+    fun `반려식물 등록`() {
         // given
-        val createRequest = CompanionPlantFixture.generatePetPlantCreateRequest(1L)
+        val 반려_식물_정보 = generateCompanionPlantCreateRequest(1L)
 
         // when
-        val 식물_등록_요청_응답 = 반려_식물_등록_요청(createRequest, "device-token")
+        val 식물_등록_요청_응답 = 반려_식물_등록_요청(반려_식물_정보, "device-token")
 
         // then
         응답_확인(식물_등록_요청_응답, HttpStatus.OK)
@@ -35,21 +39,59 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
         val 물줌_기록 = CompanionPlantHistoryRequest(1L, "WATER_CHANGE")
 
         // when
-        val 식물_히스토리_생성_응답 = 반려_식물_히스토리_생성_요청(물줌_기록, "device-token")
+        val 식물_히스토리_생성_응답 = 식물_히스토리_생성_요청(물줌_기록, "device-token")
 
         // then
         응답_확인(식물_히스토리_생성_응답, HttpStatus.OK)
     }
 
     @Test
-    fun `사용자의 반려식물 조회`() {
-        // given
-        회원_가입_요청(MemberSignUpRequest("device-token"))
-
+    fun `반려식물 조회`() {
         // when
-        val 식물_조회_요청_응답 = 반려_식물_조회_요청("device-token")
+        val 식물_조회_요청_응답 = 식물_조회_요청("device-token")
 
         // then
-        조회_응답_확인(식물_조회_요청_응답)
+        식물_조회_응답_확인(식물_조회_요청_응답)
+    }
+
+    @Test
+    fun `반려식물 데일리 기록 등록`() {
+        // given
+        val 데일리_기록_정보 = generatePlantRecordCreateRequest(1L)
+
+        // when
+        val 데일리_기록_등록_요청_응답 = 데일리_기록_등록_요청(데일리_기록_정보, "device-token")
+
+        // then
+        응답_확인(데일리_기록_등록_요청_응답, HttpStatus.OK)
+    }
+
+    /**
+     * given: 오늘 날짜에 데일리 기록을 작성한다
+     * when: 오늘 날짜에 데일리 기록을 한번더 작성한다
+     * then: Conflict 상태코드를 응답한다
+     */
+    @Test
+    fun `반려식물 데일리 기록 중복 등록`() {
+        // given
+        데일리_기록_등록_요청(generatePlantRecordCreateRequest(1L), "device-token")
+
+        // when
+        val 데일리_기록_등록_요청_응답 = 데일리_기록_등록_요청(generatePlantRecordCreateRequest(1L), "device-token")
+
+        // then
+        응답_확인(데일리_기록_등록_요청_응답, HttpStatus.CONFLICT)
+    }
+
+    @Test
+    fun `반려식물 데일리 기록 조회`() {
+        // given
+        val 데일리_기록_조회_정보 = PlantRecordLookupRequest(2L, LocalDate.now())
+
+        // when
+        val 데일리_기록_조회_요청_응답 = 데일리_기록_조회_요청(데일리_기록_조회_정보, "device-token")
+
+        // then
+        데일리_기록_조회_응답_확인(데일리_기록_조회_요청_응답)
     }
 }

@@ -10,10 +10,11 @@ import javax.imageio.ImageIO
 
 object FileFixture {
 
-    public const val IMAGE_PATH = "image"
     private val IMAGE = generateImage()
+
     fun generateImage(): ByteArray {
         val image = BufferedImage(100, 100, BufferedImage.TYPE_INT_RGB)
+
         try {
             ByteArrayOutputStream().use { byteArrayOutputStream ->
                 ImageIO.write(image, "jpg", byteArrayOutputStream)

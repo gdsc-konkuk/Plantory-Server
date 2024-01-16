@@ -4,6 +4,7 @@ import BadRequestException
 import gdsc.plantory.common.support.AccessDeviceToken
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
 import gdsc.plantory.plant.service.PlantService
 import org.springframework.http.MediaType
@@ -39,7 +40,17 @@ class PlantCommandApi(
         val historyType = HistoryType.byNameIgnoreCaseOrNull(request.historyType)
             ?: throw BadRequestException("잘못된 히스토리 타입입니다.")
 
-        plantService.createHistory(request.companionPlantId, deviceToken, historyType);
+        plantService.createHistory(request.companionPlantId, deviceToken, historyType)
+        return ResponseEntity.ok().build()
+    }
+
+    @PostMapping("/records", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE])
+    fun registerRecord(
+        @RequestPart(name = "request") request: PlantRecordCreateRequest,
+        @RequestPart(name = "image", required = false) image: MultipartFile?,
+        @AccessDeviceToken deviceToken: String,
+    ): ResponseEntity<Unit> {
+        plantService.registerRecord(request, image, deviceToken)
         return ResponseEntity.ok().build()
     }
 }
