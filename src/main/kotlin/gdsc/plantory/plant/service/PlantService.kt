@@ -7,6 +7,8 @@ import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
 import gdsc.plantory.plant.domain.findRecordByDateOrThrow
+import gdsc.plantory.plant.presentation.dto.HistoriesLookupRequest
+import gdsc.plantory.plant.presentation.dto.HistoryDto
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantDto
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
@@ -37,12 +39,6 @@ class PlantService(
         companionPlantRepository.save(companionPlant)
     }
 
-    fun createHistory(plantId: Long, deviceToken: String, historyType: HistoryType) {
-        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
-        val findPlant = companionPlantRepository.findByIdAndMemberIdOrThrow(plantId, findMember.getId)
-        findPlant.saveHistory(historyType)
-    }
-
     @Transactional(readOnly = true)
     fun lookupAllPlantsOfMember(deviceToken: String): List<CompanionPlantDto> {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
@@ -50,6 +46,27 @@ class PlantService(
         return companionPlantRepository.findAllByMemberId(findMember.getId)
             .stream()
             .map { CompanionPlantDto.from(it) }
+            .toList()
+    }
+
+    fun createHistory(plantId: Long, deviceToken: String, historyType: HistoryType) {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        val findPlant = companionPlantRepository.findByIdAndMemberIdOrThrow(plantId, findMember.getId)
+        findPlant.saveHistory(historyType)
+    }
+
+    @Transactional(readOnly = true)
+    fun lookupAllHistoriesOfMonth(request: HistoriesLookupRequest, deviceToken: String): List<HistoryDto> {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+
+        return companionPlantRepository.findAllHistoriesByMonth(
+            request.companionPlantId,
+            findMember.getId,
+            request.targetMonth.year,
+            request.targetMonth.monthValue
+        )
+            .stream()
+            .map { HistoryDto.from(it) }
             .toList()
     }
 

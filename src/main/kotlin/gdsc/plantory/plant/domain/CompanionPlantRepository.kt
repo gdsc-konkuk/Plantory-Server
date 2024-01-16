@@ -20,6 +20,18 @@ interface CompanionPlantRepository : JpaRepository<CompanionPlant, Long> {
 
     @Query(
         """
+            SELECT history FROM History history
+            WHERE 
+                history.companionPlant.id = :id 
+                AND history.companionPlant.memberId = :memberId
+                AND YEAR(history.date) = :year 
+                AND MONTH(history.date) = :month
+        """
+    )
+    fun findAllHistoriesByMonth(id: Long, memberId: Long, year: Int, month: Int): List<History>
+
+    @Query(
+        """
             SELECT record FROM PlantRecord record
             WHERE 
                 record.companionPlant.id = :id 
