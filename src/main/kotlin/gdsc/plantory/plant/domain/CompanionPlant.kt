@@ -92,7 +92,9 @@ class CompanionPlant(
         get() = LocalDate.from(this.birthDate ?: this.createAt)
 
     fun saveRecord(comment: String, imageUrl: String? = null, date: LocalDate = LocalDate.now()) {
-        this.records.findByDate(date)?.let { throw ConflictException() }
+        if (this.records.isAlreadyRegisteredAt(date)) {
+            throw ConflictException()
+        }
 
         this.records.add(PlantRecord(imageUrl, comment, this))
     }
