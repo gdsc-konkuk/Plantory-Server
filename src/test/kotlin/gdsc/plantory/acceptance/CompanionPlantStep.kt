@@ -2,9 +2,9 @@ package gdsc.plantory.acceptance
 
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
-import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
-import gdsc.plantory.plant.presentation.dto.HistoriesLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import io.restassured.RestAssured
 import io.restassured.builder.MultiPartSpecBuilder
 import io.restassured.mapper.ObjectMapperType
@@ -40,7 +40,7 @@ class CompanionPlantStep {
         }
 
         fun 식물_히스토리_생성_요청(
-            request: CompanionPlantHistoryRequest,
+            request: PlantHistoryRequest,
             deviceToken: String,
         ): ExtractableResponse<Response> =
             RestAssured
@@ -127,7 +127,7 @@ class CompanionPlantStep {
         }
 
         fun 히스토리_조회_요청(
-            request: HistoriesLookupRequest,
+            request: PlantHistoriesLookupRequest,
             deviceToken: String
         ): ExtractableResponse<Response> {
             return RestAssured

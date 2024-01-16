@@ -17,7 +17,7 @@ import java.time.LocalDate
 
 @Entity
 @Table(name = "HISTORY")
-class History(
+class PlantHistory(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
@@ -49,7 +49,7 @@ class History(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as History
+        other as PlantHistory
 
         return id == other.id
     }

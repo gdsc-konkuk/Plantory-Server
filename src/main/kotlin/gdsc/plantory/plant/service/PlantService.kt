@@ -7,8 +7,8 @@ import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
 import gdsc.plantory.plant.domain.findRecordByDateOrThrow
-import gdsc.plantory.plant.presentation.dto.HistoriesLookupRequest
-import gdsc.plantory.plant.presentation.dto.HistoryDto
+import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoryDto
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantDto
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
@@ -56,7 +56,7 @@ class PlantService(
     }
 
     @Transactional(readOnly = true)
-    fun lookupAllHistoriesOfMonth(request: HistoriesLookupRequest, deviceToken: String): List<HistoryDto> {
+    fun lookupAllHistoriesOfMonth(request: PlantHistoriesLookupRequest, deviceToken: String): List<PlantHistoryDto> {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
 
         return companionPlantRepository.findAllHistoriesByMonth(
@@ -66,7 +66,7 @@ class PlantService(
             request.targetMonth.monthValue
         )
             .stream()
-            .map { HistoryDto.from(it) }
+            .map { PlantHistoryDto.from(it) }
             .toList()
     }
 

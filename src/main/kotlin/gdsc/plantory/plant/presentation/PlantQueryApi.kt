@@ -2,8 +2,8 @@ package gdsc.plantory.plant.presentation
 
 import gdsc.plantory.common.support.AccessDeviceToken
 import gdsc.plantory.plant.presentation.dto.CompanionPlantsLookupResponse
-import gdsc.plantory.plant.presentation.dto.HistoriesLookupRequest
-import gdsc.plantory.plant.presentation.dto.HistoriesLookupResponse
+import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupResponse
 import gdsc.plantory.plant.presentation.dto.PlantRecordDto
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.plant.service.PlantService
@@ -30,11 +30,11 @@ class PlantQueryApi(
 
     @GetMapping("/histories", consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun lookupAllHistoriesOfMonth(
-        @RequestBody request: HistoriesLookupRequest,
+        @RequestBody request: PlantHistoriesLookupRequest,
         @AccessDeviceToken deviceToken: String
-    ): ResponseEntity<HistoriesLookupResponse> {
+    ): ResponseEntity<PlantHistoriesLookupResponse> {
         val histories = plantService.lookupAllHistoriesOfMonth(request, deviceToken)
-        return ResponseEntity.ok().body(HistoriesLookupResponse(histories))
+        return ResponseEntity.ok().body(PlantHistoriesLookupResponse(histories))
     }
 
     @GetMapping("/records", consumes = [MediaType.APPLICATION_JSON_VALUE])

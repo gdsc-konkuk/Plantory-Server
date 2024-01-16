@@ -12,8 +12,8 @@ import gdsc.plantory.acceptance.CompanionPlantStep.Companion.히스토리_조회
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.히스토리_조회_응답_확인
 import gdsc.plantory.fixture.CompanionPlantFixture.generateCompanionPlantCreateRequest
 import gdsc.plantory.fixture.CompanionPlantFixture.generatePlantRecordCreateRequest
-import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
-import gdsc.plantory.plant.presentation.dto.HistoriesLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.util.AcceptanceTest
 import org.junit.jupiter.api.DisplayName
@@ -40,7 +40,7 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
     @Test
     fun `반려식물 물주기 히스토리 등록`() {
         // given
-        val 물줌_기록 = CompanionPlantHistoryRequest(1L, "WATER_CHANGE")
+        val 물줌_기록 = PlantHistoryRequest(1L, "WATER_CHANGE")
 
         // when
         val 식물_히스토리_생성_응답 = 식물_히스토리_생성_요청(물줌_기록, "device-token")
@@ -102,7 +102,7 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
     @Test
     fun `반려식물 히스토리 조회`() {
         // given
-        val 히스토리_조회_정보 = HistoriesLookupRequest(2L, YearMonth.parse("2024-01"))
+        val 히스토리_조회_정보 = PlantHistoriesLookupRequest(2L, YearMonth.parse("2024-01"))
 
         // when
         val 히스토리_조회_요청_응답 = 히스토리_조회_요청(히스토리_조회_정보, "device-token")

@@ -20,7 +20,7 @@ interface CompanionPlantRepository : JpaRepository<CompanionPlant, Long> {
 
     @Query(
         """
-            SELECT history FROM History history
+            SELECT history FROM PlantHistory history
             WHERE 
                 history.companionPlant.id = :id 
                 AND history.companionPlant.memberId = :memberId
@@ -28,7 +28,7 @@ interface CompanionPlantRepository : JpaRepository<CompanionPlant, Long> {
                 AND MONTH(history.date) = :month
         """
     )
-    fun findAllHistoriesByMonth(id: Long, memberId: Long, year: Int, month: Int): List<History>
+    fun findAllHistoriesByMonth(id: Long, memberId: Long, year: Int, month: Int): List<PlantHistory>
 
     @Query(
         """

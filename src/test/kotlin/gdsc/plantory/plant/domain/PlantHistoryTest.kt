@@ -5,11 +5,11 @@ import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import java.time.LocalDate
 
-@DisplayName("도메인 : History")
-class HistoryTest {
+@DisplayName("도메인 : PlantHistory")
+class PlantHistoryTest {
 
     @Test
     fun `히스토리 생성`() {
-        assertThatCode { History(HistoryType.WATER_CHANGE, LocalDate.now()) }.doesNotThrowAnyException()
+        assertThatCode { PlantHistory(HistoryType.WATER_CHANGE, LocalDate.now()) }.doesNotThrowAnyException()
     }
 }

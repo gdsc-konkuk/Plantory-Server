@@ -5,7 +5,7 @@ import gdsc.plantory.common.support.AccessDeviceToken
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
-import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
 import gdsc.plantory.plant.service.PlantService
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -34,7 +34,7 @@ class PlantCommandApi(
 
     @PostMapping("/histories", consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun createHistory(
-        @RequestBody request: CompanionPlantHistoryRequest,
+        @RequestBody request: PlantHistoryRequest,
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
         val historyType = HistoryType.byNameIgnoreCaseOrNull(request.historyType)

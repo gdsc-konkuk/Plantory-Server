@@ -59,7 +59,7 @@ class CompanionPlant(
     private val records: PlantRecords = PlantRecords()
 
     @Embedded
-    private val histories: Histories = Histories()
+    private val histories: PlantHistories = PlantHistories()
 
     init {
         if (lastWaterDate.isAfter(nextWaterDate)) {
@@ -109,7 +109,7 @@ class CompanionPlant(
             this.nextWaterDate = date.plusDays(this.waterCycle.toLong())
         }
 
-        this.histories.add(History(historyType, date, this))
+        this.histories.add(PlantHistory(historyType, date, this))
     }
 
     fun recordSize(): Int = this.records.size()
