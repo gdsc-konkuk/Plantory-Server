@@ -2,11 +2,15 @@ package gdsc.plantory.fixture
 
 import gdsc.plantory.plantInformation.domain.PlantInformation
 
-const val 테스트_식물정보_ID = 1L
+private var _테스트_식물정보_ID = 0L
+val 테스트_식물정보_ID: Long
+    get() = _테스트_식물정보_ID
 
 object PlantInformationFixture {
 
-    fun generateTestPlantInformation(): PlantInformation {
+    fun generateTestPlantInformation(id: Long): PlantInformation {
+        _테스트_식물정보_ID = id
+
         return PlantInformation(
             _species = "덕구리난",
             _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
@@ -24,7 +28,7 @@ object PlantInformationFixture {
             _waterCycleSummer = 3,
             _waterCycleAutumn = 4,
             _waterCycleWinter = 4,
-            id = 테스트_식물정보_ID,
+            id = id,
         )
     }
 }

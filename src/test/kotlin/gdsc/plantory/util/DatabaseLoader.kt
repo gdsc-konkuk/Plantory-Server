@@ -24,12 +24,12 @@ class DatabaseLoader(
     fun loadData() {
         log.info("[call DataLoader]")
 
-        memberRepository.save(MemberFixture.generateTestMember())
-        plantInformationRepository.save(PlantInformationFixture.generateTestPlantInformation())
+        memberRepository.save(MemberFixture.generateTestMember(1L))
+        plantInformationRepository.save(PlantInformationFixture.generateTestPlantInformation(1L))
         companionPlantRepository.saveAll(
             listOf(
-                CompanionPlantFixture.generateTestCompanionPlantWithoutHistories(),
-                CompanionPlantFixture.generateTestCompanionPlantWithHistories(),
+                CompanionPlantFixture.generateTestCompanionPlantHasHistories(1L),
+                CompanionPlantFixture.generateTestCompanionPlantHasNoHistories(2L),
             )
         )
 

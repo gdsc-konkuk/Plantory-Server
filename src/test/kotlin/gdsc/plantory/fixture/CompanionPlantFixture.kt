@@ -6,8 +6,14 @@ import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import java.time.LocalDate
 
-const val 기록없는_테스트식물_ID = 1L
-const val 기록있는_테스트식물_ID = 2L
+private var _기록없는_테스트식물_ID = 0L
+val 기록없는_테스트식물_ID
+    get() = _기록없는_테스트식물_ID
+
+private var _기록있는_테스트식물_ID = 0L
+val 기록있는_테스트식물_ID
+    get() = _기록있는_테스트식물_ID
+
 
 object CompanionPlantFixture {
 
@@ -23,7 +29,9 @@ object CompanionPlantFixture {
         memberId = 테스터_ID,
     )
 
-    fun generateTestCompanionPlantWithoutHistories(): CompanionPlant {
+    fun generateTestCompanionPlantHasNoHistories(id: Long): CompanionPlant {
+        _기록없는_테스트식물_ID = id
+
         return CompanionPlant(
             _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
             _shortDescription = "덕구리난은 덕구리난과!",
@@ -34,11 +42,13 @@ object CompanionPlantFixture {
             waterCycle = 3,
             plantInformationId = 테스트_식물정보_ID,
             memberId = 테스터_ID,
-            id = 기록없는_테스트식물_ID
+            id = id
         )
     }
 
-    fun generateTestCompanionPlantWithHistories(): CompanionPlant {
+    fun generateTestCompanionPlantHasHistories(id: Long): CompanionPlant {
+        _기록있는_테스트식물_ID = id
+
         val companionPlant = CompanionPlant(
             _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
             _shortDescription = "덕구리난은 덕구리난과!",
@@ -49,7 +59,7 @@ object CompanionPlantFixture {
             waterCycle = 3,
             plantInformationId = 테스트_식물정보_ID,
             memberId = 테스터_ID,
-            id = 기록있는_테스트식물_ID
+            id = id
         )
 
         companionPlant.saveRecord("test-record", "https://test.com")
