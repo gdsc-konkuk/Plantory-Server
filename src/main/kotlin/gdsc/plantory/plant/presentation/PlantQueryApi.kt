@@ -21,20 +21,20 @@ class PlantQueryApi(
 ) {
 
     @GetMapping
-    fun lookupAllPlantsOfMember(
+    fun lookupAllCompanionPlantsOfMember(
         @AccessDeviceToken deviceToken: String
     ): ResponseEntity<CompanionPlantsLookupResponse> {
-        val companionPlants = plantService.lookupAllPlantsOfMember(deviceToken)
-        return ResponseEntity.ok().body(CompanionPlantsLookupResponse(companionPlants))
+        val companionPlants = plantService.lookupAllCompanionPlantsOfMember(deviceToken)
+        return ResponseEntity.ok().body(companionPlants)
     }
 
     @GetMapping("/histories", consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun lookupAllHistoriesOfMonth(
+    fun lookupAllPlantHistoriesOfMonth(
         @RequestBody request: PlantHistoriesLookupRequest,
         @AccessDeviceToken deviceToken: String
     ): ResponseEntity<PlantHistoriesLookupResponse> {
-        val histories = plantService.lookupAllHistoriesOfMonth(request, deviceToken)
-        return ResponseEntity.ok().body(PlantHistoriesLookupResponse(histories))
+        val histories = plantService.lookupAllPlantHistoriesOfMonth(request, deviceToken)
+        return ResponseEntity.ok().body(histories)
     }
 
     @GetMapping("/records", consumes = [MediaType.APPLICATION_JSON_VALUE])

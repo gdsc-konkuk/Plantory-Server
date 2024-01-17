@@ -33,24 +33,24 @@ class PlantCommandApi(
     }
 
     @PostMapping("/histories", consumes = [MediaType.APPLICATION_JSON_VALUE])
-    fun createHistory(
+    fun createPlantHistory(
         @RequestBody request: PlantHistoryRequest,
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
         val historyType = HistoryType.byNameIgnoreCaseOrNull(request.historyType)
             ?: throw BadRequestException("잘못된 히스토리 타입입니다.")
 
-        plantService.createHistory(request.companionPlantId, deviceToken, historyType)
+        plantService.createPlantHistory(request.companionPlantId, deviceToken, historyType)
         return ResponseEntity.ok().build()
     }
 
     @PostMapping("/records", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE])
-    fun registerRecord(
+    fun createPlantRecord(
         @RequestPart(name = "request") request: PlantRecordCreateRequest,
         @RequestPart(name = "image", required = false) image: MultipartFile?,
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
-        plantService.registerRecord(request, image, deviceToken)
+        plantService.createRecord(request, image, deviceToken)
         return ResponseEntity.ok().build()
     }
 }

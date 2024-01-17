@@ -16,7 +16,7 @@ import jakarta.persistence.Table
 import java.time.LocalDate
 
 @Entity
-@Table(name = "HISTORY")
+@Table(name = "PLANT_HISTORY")
 class PlantHistory(
 
     @Enumerated(EnumType.STRING)
