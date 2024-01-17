@@ -1,7 +1,6 @@
 package gdsc.plantory.fixture
 
 import gdsc.plantory.plant.domain.CompanionPlant
-import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import java.time.LocalDate
@@ -46,10 +45,10 @@ object CompanionPlantFixture {
         )
     }
 
-    fun generateTestCompanionPlantHasHistories(id: Long): CompanionPlant {
+    fun generateTestCompanionPlantWillHaveHistories(id: Long): CompanionPlant {
         _기록있는_테스트식물_ID = id
 
-        val companionPlant = CompanionPlant(
+        return CompanionPlant(
             _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
             _shortDescription = "덕구리난은 덕구리난과!",
             _nickname = "히스토리 있는 테스트식물",
@@ -61,13 +60,6 @@ object CompanionPlantFixture {
             memberId = 테스터_ID,
             id = id
         )
-
-        companionPlant.saveRecord("test-record", "https://test.com")
-        companionPlant.saveHistory(HistoryType.RECORDING)
-        companionPlant.saveHistory(HistoryType.POT_CHANGE)
-        companionPlant.saveHistory(HistoryType.WATER_CHANGE)
-
-        return companionPlant
     }
 
     fun generateCompanionPlantCreateRequest(plantInformationId: Long): CompanionPlantCreateRequest {
