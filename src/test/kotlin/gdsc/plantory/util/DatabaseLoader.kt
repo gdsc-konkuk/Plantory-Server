@@ -12,6 +12,12 @@ import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
 import java.time.LocalDate
 
+const val TEST_MEMBER_ID = 1L
+const val TEST_MEMBER_TOKEN = "device-token"
+const val TEST_PLANT_INFO_ID = 1L
+const val TEST_PLANT_ID_NO_HISTORY = 1L
+const val TEST_PLANT_ID_HAS_HISTORY = 2L
+
 @Component
 class DatabaseLoader(
     private val memberRepository: MemberRepository,
@@ -26,7 +32,7 @@ class DatabaseLoader(
     fun loadData() {
         log.info("[call DataLoader]")
 
-        val member = memberRepository.save(Member("device-token", 1L))
+        val member = memberRepository.save(Member(TEST_MEMBER_TOKEN, TEST_MEMBER_ID))
 
         val plantInformation = plantInformationRepository.save(
             PlantInformation(
@@ -46,7 +52,7 @@ class DatabaseLoader(
                 _waterCycleSummer = 3,
                 _waterCycleAutumn = 4,
                 _waterCycleWinter = 4,
-                id = 1L,
+                id = TEST_PLANT_INFO_ID,
             )
         )
 
@@ -59,7 +65,7 @@ class DatabaseLoader(
             waterCycle = 3,
             plantInformationId = plantInformation.getId,
             memberId = member.getId,
-            id = 1L,
+            id = TEST_PLANT_ID_NO_HISTORY,
         )
 
         val companionPlant2 = CompanionPlant(
@@ -71,7 +77,7 @@ class DatabaseLoader(
             waterCycle = 3,
             plantInformationId = plantInformation.getId,
             memberId = member.getId,
-            id = 2L,
+            id = TEST_PLANT_ID_HAS_HISTORY,
         )
 
         companionPlant2.saveRecord("test-record2", "https://test.com")

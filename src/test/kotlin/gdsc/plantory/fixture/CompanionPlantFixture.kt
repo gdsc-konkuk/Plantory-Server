@@ -3,6 +3,8 @@ package gdsc.plantory.fixture
 import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
+import gdsc.plantory.util.TEST_MEMBER_ID
+import gdsc.plantory.util.TEST_PLANT_INFO_ID
 import java.time.LocalDate
 
 object CompanionPlantFixture {
@@ -15,8 +17,8 @@ object CompanionPlantFixture {
         nextWaterDate = LocalDate.of(2024, 1, 10),
         lastWaterDate = LocalDate.of(2024, 1, 7),
         waterCycle = 3,
-        plantInformationId = 1L,
-        memberId = 1L,
+        plantInformationId = TEST_PLANT_INFO_ID,
+        memberId = TEST_MEMBER_ID,
     )
 
     fun generateCompanionPlantCreateRequest(plantInformationId: Long): CompanionPlantCreateRequest {
