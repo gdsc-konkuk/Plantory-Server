@@ -43,7 +43,7 @@ class PlantHistory(
         get() = this.type
 
     val getDate: LocalDate
-        get() = this.date
+        get() = LocalDate.from(this.date)
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
