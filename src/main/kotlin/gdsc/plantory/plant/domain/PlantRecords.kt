@@ -12,6 +12,6 @@ class PlantRecords {
     private val plantRecords: MutableList<PlantRecord> = mutableListOf()
 
     fun add(plantRecord: PlantRecord) = this.plantRecords.add(plantRecord)
-    fun isAlreadyRegisteredAt(date: LocalDate) = this.plantRecords.find { it.isRegisteredAt(date) } != null
+    fun isAlreadyRegisteredAt(date: LocalDate): Boolean = this.plantRecords.find { it.isRegisteredAt(date) } != null
     fun size(): Int = this.plantRecords.size
 }

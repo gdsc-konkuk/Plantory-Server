@@ -47,7 +47,7 @@ class PlantRecord(
     val getComment: String
         get() = this.comment.value
 
-    fun isRegisteredAt(date: LocalDate) = LocalDate.from(this.createAt) == date
+    fun isRegisteredAt(date: LocalDate): Boolean = LocalDate.from(this.createAt) == date
 
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
