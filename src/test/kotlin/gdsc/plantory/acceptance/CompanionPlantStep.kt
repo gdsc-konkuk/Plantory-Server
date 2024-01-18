@@ -54,7 +54,7 @@ class CompanionPlantStep {
                 .delete("/api/v1/plants")
                 .then()
                 .log().all()
-                .statusCode(HttpStatus.OK.value())
+                .statusCode(HttpStatus.NO_CONTENT.value())
                 .extract()
         }
 

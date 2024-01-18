@@ -52,7 +52,7 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
         val 식물_삭제_요청_응답 = 반려_식물_삭제_요청(반려_식물_정보, 테스터_디바이스_토큰)
 
         // then
-        응답_확인(식물_삭제_요청_응답, HttpStatus.OK)
+        응답_확인(식물_삭제_요청_응답, HttpStatus.NO_CONTENT)
     }
 
     @Test

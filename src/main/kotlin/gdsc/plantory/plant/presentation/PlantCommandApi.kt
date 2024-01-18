@@ -40,7 +40,7 @@ class PlantCommandApi(
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
         plantService.remove(request, deviceToken)
-        return ResponseEntity.ok().build()
+        return ResponseEntity.noContent().build()
     }
 
     @PostMapping("/histories", consumes = [MediaType.APPLICATION_JSON_VALUE])
