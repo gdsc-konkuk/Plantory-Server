@@ -6,6 +6,7 @@ import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_조회_요�
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_등록_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_조회_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.데일리_기록_조회_응답_확인
+import gdsc.plantory.acceptance.CompanionPlantStep.Companion.반려_식물_삭제_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_히스토리_생성_요청
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.식물_조회_응답_확인
 import gdsc.plantory.acceptance.CompanionPlantStep.Companion.히스토리_조회_요청
@@ -16,6 +17,7 @@ import gdsc.plantory.fixture.테스터_디바이스_토큰
 import gdsc.plantory.fixture.테스트_식물정보_ID
 import gdsc.plantory.fixture.CompanionPlantFixture.generateCompanionPlantCreateRequest
 import gdsc.plantory.fixture.CompanionPlantFixture.generatePlantRecordCreateRequest
+import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
@@ -39,6 +41,18 @@ class CompanionPlantAcceptanceTest : AcceptanceTest() {
 
         // then
         응답_확인(식물_등록_요청_응답, HttpStatus.OK)
+    }
+
+    @Test
+    fun `반려식물 삭제`() {
+        // given
+        val 반려_식물_정보 = CompanionPlantDeleteRequest(기록있는_테스트식물_ID)
+
+        // when
+        val 식물_삭제_요청_응답 = 반려_식물_삭제_요청(반려_식물_정보, 테스터_디바이스_토큰)
+
+        // then
+        응답_확인(식물_삭제_요청_응답, HttpStatus.OK)
     }
 
     @Test

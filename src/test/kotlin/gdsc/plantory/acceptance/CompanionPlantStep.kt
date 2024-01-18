@@ -1,6 +1,7 @@
 package gdsc.plantory.acceptance
 
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
+import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
@@ -33,6 +34,24 @@ class CompanionPlantStep {
                 .log().all()
                 .`when`()
                 .post("/api/v1/plants")
+                .then()
+                .log().all()
+                .statusCode(HttpStatus.OK.value())
+                .extract()
+        }
+
+        fun 반려_식물_삭제_요청(
+            request: CompanionPlantDeleteRequest,
+            deviceToken: String,
+        ): ExtractableResponse<Response> {
+            return RestAssured
+                .given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Device-Token", deviceToken)
+                .log().all()
+                .body(request)
+                .`when`()
+                .delete("/api/v1/plants")
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.OK.value())
