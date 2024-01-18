@@ -17,6 +17,7 @@ interface CompanionPlantRepository : JpaRepository<CompanionPlant, Long> {
 
     fun findAllByMemberId(memberId: Long): List<CompanionPlant>
     fun findByIdAndMemberId(id: Long, memberId: Long): CompanionPlant?
+    fun removeByIdAndMemberId(id: Long, memberId: Long)
 
     @Query(
         """
