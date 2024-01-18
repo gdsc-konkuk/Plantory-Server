@@ -2,8 +2,9 @@ package gdsc.plantory.acceptance
 
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
-import gdsc.plantory.plant.presentation.dto.CompanionPlantHistoryRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import io.restassured.RestAssured
 import io.restassured.builder.MultiPartSpecBuilder
 import io.restassured.mapper.ObjectMapperType
@@ -39,7 +40,7 @@ class CompanionPlantStep {
         }
 
         fun 식물_히스토리_생성_요청(
-            request: CompanionPlantHistoryRequest,
+            request: PlantHistoryRequest,
             deviceToken: String,
         ): ExtractableResponse<Response> =
             RestAssured
@@ -53,16 +54,16 @@ class CompanionPlantStep {
                 .log().all()
                 .extract()
 
-        fun 식물_조회_응답_확인(request: ExtractableResponse<Response>) {
+        fun 식물_조회_응답_확인(response: ExtractableResponse<Response>) {
             assertAll(
-                { assertThat(request.statusCode()).isEqualTo(HttpStatus.OK.value()) },
-                { assertThat(request.jsonPath().getString("companionPlants.id")).isNotBlank() },
-                { assertThat(request.jsonPath().getString("companionPlants.imageUrl")).isNotBlank() },
-                { assertThat(request.jsonPath().getString("companionPlants.nickname")).isNotBlank() },
+                { assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()) },
+                { assertThat(response.jsonPath().getString("companionPlants.id")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("companionPlants.imageUrl")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("companionPlants.nickname")).isNotBlank() },
                 {
-                    assertThat(request.jsonPath().getString("companionPlants.shortDescription")).isNotBlank()
+                    assertThat(response.jsonPath().getString("companionPlants.shortDescription")).isNotBlank()
                 },
-                { assertThat(request.jsonPath().getString("companionPlants.birthDate")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("companionPlants.birthDate")).isNotBlank() },
             )
         }
 
@@ -116,12 +117,38 @@ class CompanionPlantStep {
                 .extract()
         }
 
-        fun 데일리_기록_조회_응답_확인(request: ExtractableResponse<Response>) {
+        fun 데일리_기록_조회_응답_확인(response: ExtractableResponse<Response>) {
             assertAll(
-                { assertThat(request.statusCode()).isEqualTo(HttpStatus.OK.value()) },
-                { assertThat(request.jsonPath().getString("id")).isNotBlank() },
-                { assertThat(request.jsonPath().getString("imageUrl")).isNotBlank() },
-                { assertThat(request.jsonPath().getString("comment")).isNotBlank() },
+                { assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()) },
+                { assertThat(response.jsonPath().getString("id")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("imageUrl")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("comment")).isNotBlank() },
+            )
+        }
+
+        fun 히스토리_조회_요청(
+            request: PlantHistoriesLookupRequest,
+            deviceToken: String
+        ): ExtractableResponse<Response> {
+            return RestAssured
+                .given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .header("Device-Token", deviceToken)
+                .log().all()
+                .body(request)
+                .`when`()
+                .get("/api/v1/plants/histories")
+                .then()
+                .log().all()
+                .extract()
+        }
+
+        fun 히스토리_조회_응답_확인(response: ExtractableResponse<Response>) {
+            assertAll(
+                { assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()) },
+                { assertThat(response.jsonPath().getString("histories.id")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("histories.type")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("histories.date")).isNotBlank() },
             )
         }
 

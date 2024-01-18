@@ -16,8 +16,8 @@ import jakarta.persistence.Table
 import java.time.LocalDate
 
 @Entity
-@Table(name = "HISTORY")
-class History(
+@Table(name = "PLANT_HISTORY")
+class PlantHistory(
 
     @Enumerated(EnumType.STRING)
     @Column(name = "type", nullable = false)
@@ -36,11 +36,20 @@ class History(
     private val id: Long = 0L,
 ) : BaseTimeEntity() {
 
+    val getId: Long
+        get() = this.id
+
+    val getType: HistoryType
+        get() = this.type
+
+    val getDate: LocalDate
+        get() = LocalDate.from(this.date)
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as History
+        other as PlantHistory
 
         return id == other.id
     }

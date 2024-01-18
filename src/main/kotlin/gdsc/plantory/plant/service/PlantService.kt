@@ -7,11 +7,13 @@ import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
 import gdsc.plantory.plant.domain.findRecordByDateOrThrow
+import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
-import gdsc.plantory.plant.presentation.dto.CompanionPlantDto
+import gdsc.plantory.plant.presentation.dto.CompanionPlantsLookupResponse
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordDto
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupResponse
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -37,23 +39,38 @@ class PlantService(
         companionPlantRepository.save(companionPlant)
     }
 
-    fun createHistory(plantId: Long, deviceToken: String, historyType: HistoryType) {
+    @Transactional(readOnly = true)
+    fun lookupAllCompanionPlantsOfMember(deviceToken: String): CompanionPlantsLookupResponse {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
-        val findPlant = companionPlantRepository.findByIdAndMemberIdOrThrow(plantId, findMember.getId)
-        findPlant.saveHistory(historyType)
+        val findCompanionPlants = companionPlantRepository.findAllByMemberId(findMember.getId)
+
+        return CompanionPlantsLookupResponse.from(findCompanionPlants)
+    }
+
+    fun createPlantHistory(plantId: Long, deviceToken: String, historyType: HistoryType) {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        val findCompanionPlant = companionPlantRepository.findByIdAndMemberIdOrThrow(plantId, findMember.getId)
+
+        findCompanionPlant.saveHistory(historyType)
     }
 
     @Transactional(readOnly = true)
-    fun lookupAllPlantsOfMember(deviceToken: String): List<CompanionPlantDto> {
+    fun lookupAllPlantHistoriesOfMonth(
+        request: PlantHistoriesLookupRequest,
+        deviceToken: String
+    ): PlantHistoriesLookupResponse {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        val findPlantHistories = companionPlantRepository.findAllHistoriesByMonth(
+            request.companionPlantId,
+            findMember.getId,
+            request.targetMonth.year,
+            request.targetMonth.monthValue
+        )
 
-        return companionPlantRepository.findAllByMemberId(findMember.getId)
-            .stream()
-            .map { CompanionPlantDto.from(it) }
-            .toList()
+        return PlantHistoriesLookupResponse.from(findPlantHistories)
     }
 
-    fun registerRecord(
+    fun createRecord(
         request: PlantRecordCreateRequest,
         image: MultipartFile?,
         deviceToken: String,

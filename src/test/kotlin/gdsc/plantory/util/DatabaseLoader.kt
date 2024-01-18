@@ -1,16 +1,15 @@
 package gdsc.plantory.util
 
-import gdsc.plantory.member.domain.Member
+import gdsc.plantory.fixture.CompanionPlantFixture
+import gdsc.plantory.fixture.MemberFixture
+import gdsc.plantory.fixture.PlantInformationFixture
 import gdsc.plantory.member.domain.MemberRepository
-import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
-import gdsc.plantory.plantInformation.domain.PlantInformation
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Component
-import java.time.LocalDate
 
 @Component
 class DatabaseLoader(
@@ -26,58 +25,19 @@ class DatabaseLoader(
     fun loadData() {
         log.info("[call DataLoader]")
 
-        val member = memberRepository.save(Member("device-token", 1L))
+        val testMember = MemberFixture.generateTestMember(1L)
+        val testPlantInformation = PlantInformationFixture.generateTestPlantInformation(1L)
+        val testCompanionPlantWillHaveHistories = CompanionPlantFixture.generateTestCompanionPlantWillHaveHistories(1L)
+        val testCompanionPlantHasNoHistories = CompanionPlantFixture.generateTestCompanionPlantHasNoHistories(2L)
 
-        val plantInformation = plantInformationRepository.save(
-            PlantInformation(
-                _species = "덕구리난",
-                _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
-                _familyName = "백합과",
-                smell = "거의 없음",
-                poison = "없음",
-                manageLevel = "초보자",
-                growSpeed = "느림",
-                _requireTemp = "21~25℃",
-                _minimumTemp = "13℃ 이상",
-                requireHumidity = "40% 미만",
-                postingPlace = "거실 창측 (실내깊이 150~300cm),발코니 내측 (실내깊이 50~150cm),발코니 창측 (실내깊이 0~50cm)",
-                specialManageInfo = "적절한 환기가 필요함, 여름동안 햇볕이 잘드는 위치에 배치하는 것이 좋음.",
-                _waterCycleSpring = 4,
-                _waterCycleSummer = 3,
-                _waterCycleAutumn = 4,
-                _waterCycleWinter = 4,
-                id = 1L,
-            )
-        )
+        testCompanionPlantWillHaveHistories.saveRecord("test-record", "https://test.com")
+        testCompanionPlantWillHaveHistories.saveHistory(HistoryType.RECORDING)
+        testCompanionPlantWillHaveHistories.saveHistory(HistoryType.POT_CHANGE)
+        testCompanionPlantWillHaveHistories.saveHistory(HistoryType.WATER_CHANGE)
 
-        val companionPlant1 = CompanionPlant(
-            _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
-            _shortDescription = "덕구리난은 덕구리난과!",
-            _nickname = "덕구리난1",
-            nextWaterDate = LocalDate.now().plusDays(3),
-            lastWaterDate = LocalDate.now(),
-            waterCycle = 3,
-            plantInformationId = plantInformation.getId,
-            memberId = member.getId,
-            id = 1L,
-        )
-
-        val companionPlant2 = CompanionPlant(
-            _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
-            _shortDescription = "덕구리난은 덕구리난과!",
-            _nickname = "덕구리난2",
-            nextWaterDate = LocalDate.now().plusDays(3),
-            lastWaterDate = LocalDate.now(),
-            waterCycle = 3,
-            plantInformationId = plantInformation.getId,
-            memberId = member.getId,
-            id = 2L,
-        )
-
-        companionPlant2.saveRecord("test-record2", "https://test.com")
-        companionPlant2.saveHistory(HistoryType.RECORDING)
-
-        companionPlantRepository.saveAll(listOf(companionPlant1, companionPlant2))
+        memberRepository.save(testMember)
+        plantInformationRepository.save(testPlantInformation)
+        companionPlantRepository.saveAll(listOf(testCompanionPlantWillHaveHistories, testCompanionPlantHasNoHistories))
 
         log.info("[init complete DataLoader]")
     }
