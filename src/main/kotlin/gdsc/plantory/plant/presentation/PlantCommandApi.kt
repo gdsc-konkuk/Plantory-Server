@@ -4,11 +4,13 @@ import BadRequestException
 import gdsc.plantory.common.support.AccessDeviceToken
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
+import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
 import gdsc.plantory.plant.service.PlantService
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -29,6 +31,15 @@ class PlantCommandApi(
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
         plantService.create(request, image, deviceToken)
+        return ResponseEntity.ok().build()
+    }
+
+    @DeleteMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
+    fun remove(
+        @RequestBody request: CompanionPlantDeleteRequest,
+        @AccessDeviceToken deviceToken: String,
+    ): ResponseEntity<Unit> {
+        plantService.remove(request, deviceToken)
         return ResponseEntity.ok().build()
     }
 

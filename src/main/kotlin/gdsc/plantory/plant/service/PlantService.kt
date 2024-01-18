@@ -9,6 +9,7 @@ import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
 import gdsc.plantory.plant.domain.findRecordByDateOrThrow
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
+import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantsLookupResponse
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordDto
@@ -37,6 +38,11 @@ class PlantService(
         val companionPlant = request.toEntity(imagePath, findMember.getId, findPlantInformation.getWaterCycle)
 
         companionPlantRepository.save(companionPlant)
+    }
+
+    fun remove(request: CompanionPlantDeleteRequest, deviceToken: String) {
+        val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
+        companionPlantRepository.removeByIdAndMemberId(request.companionPlantId, findMember.getId)
     }
 
     @Transactional(readOnly = true)
