@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration
 import org.springframework.core.io.ClassPathResource
 import java.util.Optional
 
-@Configuration
+// @Configuration
 class FirebaseConfig(
     @Value("\${fcm.key.path}")
     private val fcmPrivateKeyPath: String,

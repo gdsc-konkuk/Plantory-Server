@@ -53,10 +53,10 @@ dependencies {
     testImplementation("org.testcontainers:mysql:1.17.6")
     testImplementation("io.rest-assured:rest-assured")
 
-    // QueryDsl
-    implementation("com.querydsl:querydsl-jpa:5.0.0")
-    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
-    kapt("org.springframework.boot:spring-boot-configuration-processor")
+//    // QueryDsl
+//    implementation("com.querydsl:querydsl-jpa:5.0.0")
+//    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
+//    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     // firebase
     implementation("com.google.firebase:firebase-admin:9.2.0")
