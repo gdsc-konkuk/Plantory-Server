@@ -22,3 +22,8 @@ local:
 companionPlant:
   image:
     directory: photos/companionPlant
+
+fcm:
+  key:
+    path: config/google-services.json
+    scope: test

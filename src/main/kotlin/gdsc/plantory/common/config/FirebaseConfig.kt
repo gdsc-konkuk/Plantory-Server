@@ -13,7 +13,9 @@ import java.util.Optional
 @Configuration
 class FirebaseConfig(
     @Value("\${fcm.key.path}")
-    private val fcmPrivateKeyPath: String
+    private val fcmPrivateKeyPath: String,
+    @Value("\${fcm.key.scope}")
+    private val fcmScope: String
 ) {
 
     @Bean
@@ -48,5 +50,6 @@ class FirebaseConfig(
     private fun createGoogleCredentials(): GoogleCredentials {
         return GoogleCredentials
             .fromStream(ClassPathResource(fcmPrivateKeyPath).inputStream)
+            .createScoped(fcmScope)
     }
 }
