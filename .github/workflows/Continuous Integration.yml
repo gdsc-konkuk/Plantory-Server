@@ -13,6 +13,7 @@ jobs:
       - name: Set up sources
         uses: actions/checkout@v4
         with:
+          token: ${{ secrets.GH_TOKEN }}
           submodules: true
 
       - name: Set up JDK 17
