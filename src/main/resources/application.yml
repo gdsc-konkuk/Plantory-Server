@@ -5,6 +5,7 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        dialect: org.hibernate.dialect.MySQL8Dialect
     defer-datasource-initialization: false
     show-sql: false
     open-in-view: false
@@ -12,6 +13,7 @@ spring:
     password: ${DB_PASSWORD}
     username: ${DB_USER}
     url: ${DB_URL}
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
 local:
   image:
