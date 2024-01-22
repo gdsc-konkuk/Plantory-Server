@@ -1,6 +1,7 @@
 package gdsc.plantory.plant.domain
 
 import NotFoundException
+import gdsc.plantory.plant.presentation.dto.CompanionPlantWaterCycleDto
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
 import java.time.LocalDate
@@ -18,6 +19,19 @@ interface CompanionPlantRepository : JpaRepository<CompanionPlant, Long> {
     fun findAllByMemberId(memberId: Long): List<CompanionPlant>
     fun findByIdAndMemberId(id: Long, memberId: Long): CompanionPlant?
     fun removeByIdAndMemberId(id: Long, memberId: Long)
+
+    @Query(
+        """
+            SELECT new gdsc.plantory.plant.presentation.dto.CompanionPlantWaterCycleDto(
+                member.deviceToken,
+                plant.nickname._value
+            )
+            FROM Member member JOIN CompanionPlant plant
+            ON member.id = plant.memberId
+            WHERE plant.nextWaterDate = :date
+        """
+    )
+    fun findAllByNextWaterDate(date: LocalDate): List<CompanionPlantWaterCycleDto>
 
     @Query(
         """
