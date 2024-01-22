@@ -1,4 +1,4 @@
-package gdsc.plantory.fcm.domain
+package gdsc.plantory.event
 
 enum class FCMChannel {
     WATER_ALERT,
