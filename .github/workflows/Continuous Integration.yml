@@ -9,6 +9,11 @@ jobs:
   Test:
     runs-on: ubuntu-22.04
 
+    env:
+      DB_URL: ${{ secrets.DB_URL }}
+      DB_USER: ${{ secrets.DB_USR }}
+      DB_PASSWORD: ${{ secrets.DB_PWD }}
+
     steps:
       - name: Set up sources
         uses: actions/checkout@v4
