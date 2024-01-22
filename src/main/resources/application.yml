@@ -1,7 +1,7 @@
 spring:
   jpa:
     database: mysql
-    database-platform: org.hibernate.dialect.MySQL8Dialect
+    database-platform: org.hibernate.dialect.MySQLDialect
     hibernate:
       ddl-auto: create
     properties:
@@ -11,9 +11,9 @@ spring:
     show-sql: false
     open-in-view: false
   datasource:
-    password: ${DB_PASSWORD}
-    username: ${DB_USER}
     url: ${DB_URL}
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
     driver-class-name: com.mysql.cj.jdbc.Driver
 
 local:
