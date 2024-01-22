@@ -3,7 +3,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     id("org.springframework.boot") version "3.2.1"
     id("io.spring.dependency-management") version "1.1.4"
-    kotlin("kapt") version "1.9.21"
+    kotlin("kapt") version "1.9.20"
     kotlin("jvm") version "1.9.21"
     kotlin("plugin.spring") version "1.9.21"
     kotlin("plugin.jpa") version "1.9.21"
@@ -21,9 +21,9 @@ allOpen {
 }
 
 noArg {
-    annotation("javax.persistence.Entity")
-    annotation("javax.persistence.MappedSuperclass")
-    annotation("javax.persistence.Embeddable")
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.MappedSuperclass")
+    annotation("jakarta.persistence.Embeddable")
 }
 
 java {
@@ -53,10 +53,10 @@ dependencies {
     testImplementation("org.testcontainers:mysql:1.17.6")
     testImplementation("io.rest-assured:rest-assured")
 
-//    // QueryDsl
-//    implementation("com.querydsl:querydsl-jpa:5.0.0")
-//    kapt("com.querydsl:querydsl-apt:5.0.0:jpa")
-//    kapt("org.springframework.boot:spring-boot-configuration-processor")
+    // QueryDsl
+    implementation("com.querydsl:querydsl-jpa:5.0.0")
+    kapt("com.querydsl:querydsl-apt:5.0.0:jakarta")
+    kapt("org.springframework.boot:spring-boot-configuration-processor")
 
     // firebase
     implementation("com.google.firebase:firebase-admin:9.2.0")
