@@ -1,0 +1,29 @@
+spring:
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQLDialect
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+    open-in-view: false
+  datasource:
+    url: jdbc:tc:mysql:8:///plantory?TC_REUSABLE=true
+    username: plantory
+    password: plantory1234
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+
+local:
+  image:
+    root: src/test/resources
+
+companionPlant:
+  image:
+    directory: photos/companionPlant
+
+fcm:
+  key:
+    path: config/google-services.json
+    scope: test
