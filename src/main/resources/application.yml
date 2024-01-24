@@ -26,5 +26,5 @@ companionPlant:
 
 fcm:
   key:
-    path: src/main/resources/config/google-services.json
+    path: config/google-services.json
     scope: prod
