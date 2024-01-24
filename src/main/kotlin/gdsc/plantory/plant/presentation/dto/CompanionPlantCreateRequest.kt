@@ -18,8 +18,10 @@ data class CompanionPlantCreateRequest(
     @DateTimeFormat(pattern = "yyyy-MM-dd") val lastWaterDate: LocalDate,
 ) {
     fun toEntity(imagePath: String, memberId: Long, waterCycle: Int): CompanionPlant {
+        // TODO : Cloud 환경으로 이전 후 제거, 로컬 사진 저장 테스트 용도
+        val baseUrl: String = "https://nongsaro.go.kr/"
         return CompanionPlant(
-            _imageUrl = imagePath,
+            _imageUrl = baseUrl + imagePath,
             _shortDescription = this.shortDescription,
             _nickname = this.nickname,
             nextWaterDate = this.lastWaterDate.plusDays(waterCycle.toLong()),
