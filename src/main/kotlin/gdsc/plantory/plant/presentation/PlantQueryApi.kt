@@ -4,8 +4,8 @@ import gdsc.plantory.common.support.AccessDeviceToken
 import gdsc.plantory.plant.presentation.dto.CompanionPlantsLookupResponse
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupResponse
-import gdsc.plantory.plant.presentation.dto.PlantRecordDto
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupResponse
 import gdsc.plantory.plant.service.PlantService
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
@@ -41,7 +41,7 @@ class PlantQueryApi(
     fun lookupPlantRecordOfDate(
         @RequestBody request: PlantRecordLookupRequest,
         @AccessDeviceToken deviceToken: String
-    ): ResponseEntity<PlantRecordDto> {
+    ): ResponseEntity<PlantRecordLookupResponse> {
         val plantRecord = plantService.lookupPlantRecordOfDate(request, deviceToken)
         return ResponseEntity.ok().body(plantRecord)
     }

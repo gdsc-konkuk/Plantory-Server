@@ -140,7 +140,7 @@ class CompanionPlantStep {
         fun 데일리_기록_조회_응답_확인(response: ExtractableResponse<Response>) {
             assertAll(
                 { assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()) },
-                { assertThat(response.jsonPath().getString("id")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("plantRecordId")).isNotBlank() },
                 { assertThat(response.jsonPath().getString("imageUrl")).isNotBlank() },
                 { assertThat(response.jsonPath().getString("comment")).isNotBlank() },
             )

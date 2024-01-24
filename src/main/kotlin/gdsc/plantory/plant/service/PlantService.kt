@@ -6,15 +6,14 @@ import gdsc.plantory.member.domain.findByDeviceTokenOrThrow
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
-import gdsc.plantory.plant.domain.findRecordByDateOrThrow
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantsLookupResponse
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupResponse
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
-import gdsc.plantory.plant.presentation.dto.PlantRecordDto
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupResponse
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -91,15 +90,18 @@ class PlantService(
     }
 
     @Transactional(readOnly = true)
-    fun lookupPlantRecordOfDate(request: PlantRecordLookupRequest, deviceToken: String): PlantRecordDto {
+    fun lookupPlantRecordOfDate(request: PlantRecordLookupRequest, deviceToken: String): PlantRecordLookupResponse {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
-        val findPlantRecord = companionPlantRepository.findRecordByDateOrThrow(
+        val findPlantRecord = companionPlantRepository.findRecordByDate(
             request.companionPlantId,
             findMember.getId,
             request.recordDate
         )
 
-        return PlantRecordDto.from(findPlantRecord)
+        val historyType =
+            companionPlantRepository.findAllHistoryTypeByDate(request.companionPlantId, request.recordDate)
+
+        return PlantRecordLookupResponse.of(findPlantRecord, historyType.contains(HistoryType.WATER_CHANGE))
     }
 
     private fun saveImageAndGetPath(image: MultipartFile?, defaultUrl: String): String {
