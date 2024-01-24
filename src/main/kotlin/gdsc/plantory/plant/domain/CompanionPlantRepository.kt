@@ -1,6 +1,7 @@
 package gdsc.plantory.plant.domain
 
 import NotFoundException
+import gdsc.plantory.plant.presentation.dto.CompanionPlantLookupDto
 import gdsc.plantory.plant.presentation.dto.CompanionPlantWaterCycleDto
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.data.jpa.repository.Query
@@ -16,9 +17,25 @@ fun CompanionPlantRepository.findRecordByDateOrThrow(id: Long, memberId: Long, d
 
 interface CompanionPlantRepository : JpaRepository<CompanionPlant, Long> {
 
-    fun findAllByMemberId(memberId: Long): List<CompanionPlant>
     fun findByIdAndMemberId(id: Long, memberId: Long): CompanionPlant?
     fun removeByIdAndMemberId(id: Long, memberId: Long)
+
+    @Query(
+        """
+            SELECT new gdsc.plantory.plant.presentation.dto.CompanionPlantLookupDto(
+                plant.id,
+                plant.imageUrl._value,
+                plant.nickname._value,
+                plant.shortDescription._value,
+                plant.birthDate,
+                information.species.name
+            )
+            FROM PlantInformation information JOIN CompanionPlant plant
+            ON information.id = plant.plantInformationId
+            WHERE plant.memberId = :memberId
+        """
+    )
+    fun findAllByMemberId(memberId: Long): List<CompanionPlantLookupDto>
 
     @Query(
         """

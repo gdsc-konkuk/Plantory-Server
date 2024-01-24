@@ -7,14 +7,14 @@ import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
 import gdsc.plantory.plant.domain.findRecordByDateOrThrow
-import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantsLookupResponse
-import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
-import gdsc.plantory.plant.presentation.dto.PlantRecordDto
-import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupResponse
+import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordDto
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
 import org.springframework.stereotype.Service
@@ -50,7 +50,7 @@ class PlantService(
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
         val findCompanionPlants = companionPlantRepository.findAllByMemberId(findMember.getId)
 
-        return CompanionPlantsLookupResponse.from(findCompanionPlants)
+        return CompanionPlantsLookupResponse(findCompanionPlants)
     }
 
     fun createPlantHistory(plantId: Long, deviceToken: String, historyType: HistoryType) {
