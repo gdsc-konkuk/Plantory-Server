@@ -2,9 +2,7 @@ package gdsc.plantory.plant.presentation
 
 import gdsc.plantory.common.support.AccessDeviceToken
 import gdsc.plantory.plant.presentation.dto.CompanionPlantsLookupResponse
-import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupResponse
-import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupResponse
 import gdsc.plantory.plant.service.PlantService
 import io.swagger.v3.oas.annotations.Operation
@@ -43,8 +41,7 @@ class PlantQueryApi(
         @Parameter(description = "조회 기간(달)") @RequestParam targetMonth: YearMonth,
         @AccessDeviceToken deviceToken: String
     ): ResponseEntity<PlantHistoriesLookupResponse> {
-        val request = PlantHistoriesLookupRequest(companionPlantId, targetMonth)
-        val histories = plantService.lookupAllPlantHistoriesOfMonth(request, deviceToken)
+        val histories = plantService.lookupAllPlantHistoriesOfMonth(companionPlantId, targetMonth, deviceToken)
         return ResponseEntity.ok().body(histories)
     }
 
@@ -56,8 +53,7 @@ class PlantQueryApi(
         @Parameter(description = "데일리 기록의 날짜") @RequestParam recordDate: LocalDate,
         @AccessDeviceToken deviceToken: String
     ): ResponseEntity<PlantRecordLookupResponse> {
-        val request = PlantRecordLookupRequest(companionPlantId, recordDate)
-        val plantRecord = plantService.lookupPlantRecordOfDate(request, deviceToken)
+        val plantRecord = plantService.lookupPlantRecordOfDate(companionPlantId, recordDate, deviceToken)
         return ResponseEntity.ok().body(plantRecord)
     }
 }

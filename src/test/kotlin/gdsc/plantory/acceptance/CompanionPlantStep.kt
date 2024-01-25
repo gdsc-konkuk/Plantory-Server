@@ -1,11 +1,8 @@
 package gdsc.plantory.acceptance
 
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
-import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
-import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
-import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import io.restassured.RestAssured
 import io.restassured.builder.MultiPartSpecBuilder
 import io.restassured.mapper.ObjectMapperType
@@ -16,6 +13,8 @@ import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.assertAll
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import java.time.LocalDate
+import java.time.YearMonth
 
 class CompanionPlantStep {
 
@@ -41,17 +40,15 @@ class CompanionPlantStep {
         }
 
         fun 반려_식물_삭제_요청(
-            request: CompanionPlantDeleteRequest,
+            companionPlantId: Long,
             deviceToken: String,
         ): ExtractableResponse<Response> {
             return RestAssured
                 .given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Device-Token", deviceToken)
                 .log().all()
-                .body(request)
                 .`when`()
-                .delete("/api/v1/plants")
+                .delete("/api/v1/plants/{companionPlantId}", companionPlantId)
                 .then()
                 .log().all()
                 .statusCode(HttpStatus.NO_CONTENT.value())
@@ -59,6 +56,7 @@ class CompanionPlantStep {
         }
 
         fun 식물_히스토리_생성_요청(
+            companionPlantId: Long,
             request: PlantHistoryRequest,
             deviceToken: String,
         ): ExtractableResponse<Response> =
@@ -68,7 +66,7 @@ class CompanionPlantStep {
                 .header("Device-Token", deviceToken)
                 .log().all()
                 .body(request)
-                .`when`().post("/api/v1/plants/histories")
+                .`when`().post("/api/v1/plants/{companionPlantId}/histories", companionPlantId)
                 .then()
                 .log().all()
                 .extract()
@@ -102,6 +100,7 @@ class CompanionPlantStep {
         }
 
         fun 데일리_기록_등록_요청(
+            companionPlantId: Long,
             request: PlantRecordCreateRequest,
             deviceToken: String,
         ): ExtractableResponse<Response> {
@@ -114,23 +113,24 @@ class CompanionPlantStep {
                 .header("Device-Token", deviceToken)
                 .log().all()
                 .`when`()
-                .post("/api/v1/plants/records")
+                .post("/api/v1/plants/{companionPlantId}/records", companionPlantId)
                 .then()
                 .log().all()
                 .extract()
         }
 
         fun 데일리_기록_조회_요청(
-            request: PlantRecordLookupRequest,
+            companionPlantId: Long,
+            recordDate: LocalDate,
             deviceToken: String
         ): ExtractableResponse<Response> {
             return RestAssured
                 .given()
                 .header("Device-Token", deviceToken)
                 .log().all()
-                .queryParam("recordDate", request.recordDate.toString())
+                .queryParam("recordDate", recordDate.toString())
                 .`when`()
-                .get("/api/v1/plants/{companionPlantId}/records", request.companionPlantId)
+                .get("/api/v1/plants/{companionPlantId}/records", companionPlantId)
                 .then()
                 .log().all()
                 .extract()
@@ -146,16 +146,17 @@ class CompanionPlantStep {
         }
 
         fun 히스토리_조회_요청(
-            request: PlantHistoriesLookupRequest,
+            companionPlantId: Long,
+            targetMonth: YearMonth,
             deviceToken: String
         ): ExtractableResponse<Response> {
             return RestAssured
                 .given()
                 .header("Device-Token", deviceToken)
                 .log().all()
-                .queryParam("targetMonth", request.targetMonth.toString())
+                .queryParam("targetMonth", targetMonth.toString())
                 .`when`()
-                .get("/api/v1/plants/{companionPlantId}/histories", request.companionPlantId)
+                .get("/api/v1/plants/{companionPlantId}/histories", companionPlantId)
                 .then()
                 .log().all()
                 .extract()

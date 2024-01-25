@@ -70,7 +70,7 @@ class PlantServiceTest(
 
         // when
         val result = plantService.lookupPlantRecordOfDate(
-            PlantRecordLookupRequest(savedPlant.getId, today), "device-token"
+            savedPlant.getId, today, "device-token"
         )
 
         // then
@@ -126,7 +126,7 @@ class PlantServiceTest(
 
         // when
         val result = plantService.lookupPlantRecordOfDate(
-            PlantRecordLookupRequest(savedPlant.getId, today), "device-token"
+            savedPlant.getId, today, "device-token"
         )
 
         // then

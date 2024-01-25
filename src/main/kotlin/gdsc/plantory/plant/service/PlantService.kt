@@ -7,18 +7,17 @@ import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
 import gdsc.plantory.plant.domain.findByIdAndMemberIdOrThrow
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
-import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantsLookupResponse
-import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupResponse
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
-import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupResponse
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.plantInformation.domain.findByIdOrThrow
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import org.springframework.web.multipart.MultipartFile
+import java.time.LocalDate
+import java.time.YearMonth
 
 @Service
 @Transactional
@@ -39,9 +38,9 @@ class PlantService(
         companionPlantRepository.save(companionPlant)
     }
 
-    fun remove(request: CompanionPlantDeleteRequest, deviceToken: String) {
+    fun remove(companionPlantId: Long, deviceToken: String) {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
-        companionPlantRepository.removeByIdAndMemberId(request.companionPlantId, findMember.getId)
+        companionPlantRepository.removeByIdAndMemberId(companionPlantId, findMember.getId)
     }
 
     @Transactional(readOnly = true)
@@ -61,28 +60,30 @@ class PlantService(
 
     @Transactional(readOnly = true)
     fun lookupAllPlantHistoriesOfMonth(
-        request: PlantHistoriesLookupRequest,
+        companionPlantId: Long,
+        targetMonth: YearMonth,
         deviceToken: String
     ): PlantHistoriesLookupResponse {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
         val findPlantHistories = companionPlantRepository.findAllHistoriesByMonth(
-            request.companionPlantId,
+            companionPlantId,
             findMember.getId,
-            request.targetMonth.year,
-            request.targetMonth.monthValue
+            targetMonth.year,
+            targetMonth.monthValue
         )
 
         return PlantHistoriesLookupResponse.from(findPlantHistories)
     }
 
     fun createRecord(
+        companionPlantId: Long,
         request: PlantRecordCreateRequest,
         image: MultipartFile?,
         deviceToken: String,
     ) {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
         val findCompanionPlant =
-            companionPlantRepository.findByIdAndMemberIdOrThrow(request.companionPlantId, findMember.getId)
+            companionPlantRepository.findByIdAndMemberIdOrThrow(companionPlantId, findMember.getId)
         val imagePath: String = saveImageAndGetPath(image, findCompanionPlant.getImageUrl)
 
         findCompanionPlant.saveRecord(request.comment, imagePath)
@@ -90,16 +91,20 @@ class PlantService(
     }
 
     @Transactional(readOnly = true)
-    fun lookupPlantRecordOfDate(request: PlantRecordLookupRequest, deviceToken: String): PlantRecordLookupResponse {
+    fun lookupPlantRecordOfDate(
+        companionPlantId: Long,
+        recordDate: LocalDate,
+        deviceToken: String
+    ): PlantRecordLookupResponse {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
         val findPlantRecord = companionPlantRepository.findRecordByDate(
-            request.companionPlantId,
+            companionPlantId,
             findMember.getId,
-            request.recordDate
+            recordDate
         )
 
         val historyType =
-            companionPlantRepository.findAllHistoryTypeByDate(request.companionPlantId, request.recordDate)
+            companionPlantRepository.findAllHistoryTypeByDate(companionPlantId, recordDate)
 
         return PlantRecordLookupResponse.of(findPlantRecord, historyType.contains(HistoryType.WATER_CHANGE))
     }
