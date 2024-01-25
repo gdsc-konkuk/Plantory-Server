@@ -60,6 +60,9 @@ dependencies {
 
     // firebase
     implementation("com.google.firebase:firebase-admin:9.2.0")
+
+    // swagger
+    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
 }
 
 tasks.withType<KotlinCompile> {
