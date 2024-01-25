@@ -31,7 +31,6 @@ class DatabaseLoader(
         val testCompanionPlantHasNoHistories = CompanionPlantFixture.generateTestCompanionPlantHasNoHistories(2L)
 
         testCompanionPlantWillHaveHistories.saveRecord("test-record", "https://test.com")
-        testCompanionPlantWillHaveHistories.saveHistory(HistoryType.RECORDING)
         testCompanionPlantWillHaveHistories.saveHistory(HistoryType.POT_CHANGE)
         testCompanionPlantWillHaveHistories.saveHistory(HistoryType.WATER_CHANGE)
 

@@ -9,8 +9,8 @@ import gdsc.plantory.plantInformation.domain.PlantInformation
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.util.AcceptanceTest
 import jakarta.persistence.EntityManager
-import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -34,7 +34,7 @@ class PlantServiceTest(
             plantService.createPlantHistory(기록없는_테스트식물_ID, 테스터_디바이스_토큰, HistoryType.RECORDING)
         }
             .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessageContaining("데일리 기록 히스토리는 직접 추가할 수 없습니다.")
+            .hasMessageContaining("데일리 기록은 히스토리 타입을 직접 추가할 수 없습니다.")
     }
 
     @Test
@@ -73,7 +73,6 @@ class PlantServiceTest(
             memberId = 1L,
         )
         companionPlant.saveRecord("test-record", "https://test.com", today)
-        companionPlant.saveHistory(HistoryType.RECORDING, today)
         companionPlant.saveHistory(HistoryType.WATER_CHANGE, today)
         val savedPlant = companionPlantRepository.save(companionPlant)
 
@@ -129,7 +128,6 @@ class PlantServiceTest(
         )
         val today = LocalDate.now()
         companionPlant.saveRecord("test-record", "https://test.com", today)
-        companionPlant.saveHistory(HistoryType.RECORDING, today)
         companionPlant.saveHistory(HistoryType.POT_CHANGE, today)
         val savedPlant = companionPlantRepository.save(companionPlant)
 

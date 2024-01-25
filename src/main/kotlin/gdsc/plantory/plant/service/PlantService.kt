@@ -59,10 +59,6 @@ class PlantService(
     fun createPlantHistory(plantId: Long, deviceToken: String, historyType: HistoryType) {
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
         val findCompanionPlant = companionPlantRepository.findByIdAndMemberIdOrThrow(plantId, findMember.getId)
-
-        if (historyType == HistoryType.RECORDING)
-            throw IllegalArgumentException("데일리 기록 히스토리는 직접 추가할 수 없습니다.")
-
         findCompanionPlant.saveHistory(historyType)
     }
 
@@ -97,7 +93,6 @@ class PlantService(
         // TODO : Cloud 환경으로 이전 후 제거, 로컬 사진 저장 테스트 용도
         val baseUrl = "https://nongsaro.go.kr/"
         findCompanionPlant.saveRecord(request.comment, baseUrl + imagePath)
-        findCompanionPlant.saveHistory(HistoryType.RECORDING)
     }
 
     @Transactional(readOnly = true)
