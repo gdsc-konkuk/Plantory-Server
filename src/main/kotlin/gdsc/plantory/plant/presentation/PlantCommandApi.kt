@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestPart
 import org.springframework.web.bind.annotation.RestController
 import org.springframework.web.multipart.MultipartFile
 
-@Tag(name = "Plant Query", description = "반려식물 정보 조회")
+@Tag(name = "Plant Command", description = "반려식물 정보 수정")
 @RestController
 @RequestMapping("/api/v1/plants")
 class PlantCommandApi(

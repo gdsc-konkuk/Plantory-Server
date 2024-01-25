@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.time.LocalDate
 import java.time.YearMonth
 
-@Tag(name = "Plant Command", description = "반려식물 정보 수정")
+@Tag(name = "Plant Query", description = "반려식물 정보 조회")
 @RestController
 @RequestMapping("/api/v1/plants")
 class PlantQueryApi(
