@@ -10,11 +10,13 @@ import gdsc.plantory.util.AcceptanceTest
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Assertions.assertAll
+import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.transaction.annotation.Transactional
 import java.time.LocalDate
 
+@DisplayName("서비스 : PlantService")
 @Transactional
 class PlantServiceTest(
     @Autowired val plantService: PlantService,
