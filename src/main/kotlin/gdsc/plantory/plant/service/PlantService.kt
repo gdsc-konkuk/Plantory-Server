@@ -33,7 +33,12 @@ class PlantService(
         val findPlantInformation = plantInformationRepository.findByIdOrThrow(request.plantInformationId)
         val imagePath: String = saveImageAndGetPath(image, findPlantInformation.getImageUrl)
 
-        val companionPlant = request.toEntity(imagePath, findMember.getId, findPlantInformation.getWaterCycle)
+        val companionPlant = request.toEntity(
+            imagePath,
+            findMember.getId,
+            findPlantInformation.getWaterCycle,
+            request.plantInformationId
+        )
 
         companionPlantRepository.save(companionPlant)
     }
@@ -86,7 +91,9 @@ class PlantService(
             companionPlantRepository.findByIdAndMemberIdOrThrow(companionPlantId, findMember.getId)
         val imagePath: String = saveImageAndGetPath(image, findCompanionPlant.getImageUrl)
 
-        findCompanionPlant.saveRecord(request.comment, imagePath)
+        // TODO : Cloud 환경으로 이전 후 제거, 로컬 사진 저장 테스트 용도
+        val baseUrl = "https://nongsaro.go.kr/"
+        findCompanionPlant.saveRecord(request.comment, baseUrl + imagePath)
         findCompanionPlant.saveHistory(HistoryType.RECORDING)
     }
 
