@@ -3,7 +3,6 @@ package gdsc.plantory.plant.service
 import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
-import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.plantInformation.domain.PlantInformation
 import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.util.AcceptanceTest

@@ -142,6 +142,8 @@ class CompanionPlantStep {
                 { assertThat(response.jsonPath().getString("plantRecordId")).isNotBlank() },
                 { assertThat(response.jsonPath().getString("imageUrl")).isNotBlank() },
                 { assertThat(response.jsonPath().getString("comment")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("nickname")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("water")).isNotBlank() },
             )
         }
 
