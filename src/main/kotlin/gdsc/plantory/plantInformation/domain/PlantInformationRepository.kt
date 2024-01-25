@@ -21,5 +21,5 @@ interface PlantInformationRepository : JpaRepository<PlantInformation, Long> {
             FROM PlantInformation pi
         """
     )
-    fun findAllProjected(): List<PlantInformationDto>
+    fun findAllSpeciesInformations(): List<PlantInformationDto>
 }

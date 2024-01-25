@@ -12,7 +12,7 @@ class PlantInformationService(
 ) {
     @Transactional(readOnly = true)
     fun lookupAllPlantInformations(): PlantInformationsLookupResponse {
-        val findPlantInformations = plantInformationRepository.findAllProjected()
+        val findPlantInformations = plantInformationRepository.findAllSpeciesInformations()
 
         return PlantInformationsLookupResponse(findPlantInformations)
     }
