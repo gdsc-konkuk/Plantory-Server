@@ -7,12 +7,14 @@ import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupResponse
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordLookupResponse
 import gdsc.plantory.plant.service.PlantService
-import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
+import java.time.YearMonth
 
 @RestController
 @RequestMapping("/api/v1/plants")
@@ -28,20 +30,24 @@ class PlantQueryApi(
         return ResponseEntity.ok().body(companionPlants)
     }
 
-    @GetMapping("/histories", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/{companionPlantId}/histories")
     fun lookupAllPlantHistoriesOfMonth(
-        @RequestBody request: PlantHistoriesLookupRequest,
+        @PathVariable companionPlantId: Long,
+        @RequestParam targetMonth: YearMonth,
         @AccessDeviceToken deviceToken: String
     ): ResponseEntity<PlantHistoriesLookupResponse> {
+        val request = PlantHistoriesLookupRequest(companionPlantId, targetMonth)
         val histories = plantService.lookupAllPlantHistoriesOfMonth(request, deviceToken)
         return ResponseEntity.ok().body(histories)
     }
 
-    @GetMapping("/records", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @GetMapping("/{companionPlantId}/records")
     fun lookupPlantRecordOfDate(
-        @RequestBody request: PlantRecordLookupRequest,
+        @PathVariable companionPlantId: Long,
+        @RequestParam recordDate: LocalDate,
         @AccessDeviceToken deviceToken: String
     ): ResponseEntity<PlantRecordLookupResponse> {
+        val request = PlantRecordLookupRequest(companionPlantId, recordDate)
         val plantRecord = plantService.lookupPlantRecordOfDate(request, deviceToken)
         return ResponseEntity.ok().body(plantRecord)
     }

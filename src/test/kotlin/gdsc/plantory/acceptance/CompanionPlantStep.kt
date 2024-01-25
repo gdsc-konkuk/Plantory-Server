@@ -126,12 +126,11 @@ class CompanionPlantStep {
         ): ExtractableResponse<Response> {
             return RestAssured
                 .given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Device-Token", deviceToken)
                 .log().all()
-                .body(request)
+                .queryParam("recordDate", request.recordDate.toString())
                 .`when`()
-                .get("/api/v1/plants/records")
+                .get("/api/v1/plants/{companionPlantId}/records", request.companionPlantId)
                 .then()
                 .log().all()
                 .extract()
@@ -152,12 +151,11 @@ class CompanionPlantStep {
         ): ExtractableResponse<Response> {
             return RestAssured
                 .given()
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .header("Device-Token", deviceToken)
                 .log().all()
-                .body(request)
+                .queryParam("targetMonth", request.targetMonth.toString())
                 .`when`()
-                .get("/api/v1/plants/histories")
+                .get("/api/v1/plants/{companionPlantId}/histories", request.companionPlantId)
                 .then()
                 .log().all()
                 .extract()
