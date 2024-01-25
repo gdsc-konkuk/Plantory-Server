@@ -8,6 +8,9 @@ import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
 import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
 import gdsc.plantory.plant.service.PlantService
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.responses.ApiResponse
 import org.springframework.http.MediaType
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -24,28 +27,34 @@ class PlantCommandApi(
     private val plantService: PlantService,
 ) {
 
+    @Operation(summary = "반려식물 등록", description = "사용자의 반려식물을 등록/추가합니다.")
+    @ApiResponse(responseCode = "200", description = "등록 성공")
     @PostMapping(consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE])
     fun create(
-        @RequestPart(name = "request") request: CompanionPlantCreateRequest,
-        @RequestPart(name = "image", required = false) image: MultipartFile?,
+        @Parameter(description = "반려식물 정보") @RequestPart(name = "request") request: CompanionPlantCreateRequest,
+        @Parameter(description = "반려식물 사진") @RequestPart(name = "image", required = false) image: MultipartFile?,
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
         plantService.create(request, image, deviceToken)
         return ResponseEntity.ok().build()
     }
 
+    @Operation(summary = "반려식물 삭제", description = "사용자의 반려식물을 삭제합니다.")
+    @ApiResponse(responseCode = "204", description = "삭제 성공")
     @DeleteMapping(consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun remove(
-        @RequestBody request: CompanionPlantDeleteRequest,
+        @Parameter(description = "삭제할 반려식물 ID") @RequestBody request: CompanionPlantDeleteRequest,
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
         plantService.remove(request, deviceToken)
         return ResponseEntity.noContent().build()
     }
 
+    @Operation(summary = "반려식물 히스토리 등록", description = "반려식물 히스토리(데일리 기록, 물줌, 분갈이)를 등록/추가합니다.")
+    @ApiResponse(responseCode = "200", description = "등록 성공")
     @PostMapping("/histories", consumes = [MediaType.APPLICATION_JSON_VALUE])
     fun createPlantHistory(
-        @RequestBody request: PlantHistoryRequest,
+        @Parameter(description = "히스토리 정보") @RequestBody request: PlantHistoryRequest,
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
         val historyType = HistoryType.byNameIgnoreCaseOrNull(request.historyType)
@@ -55,10 +64,12 @@ class PlantCommandApi(
         return ResponseEntity.ok().build()
     }
 
+    @Operation(summary = "반려식물 데일리 기록 등록", description = "반려식물 데일리 기록을 등록/추가합니다.")
+    @ApiResponse(responseCode = "200", description = "등록 성공")
     @PostMapping("/records", consumes = [MediaType.MULTIPART_FORM_DATA_VALUE, MediaType.APPLICATION_JSON_VALUE])
     fun createPlantRecord(
-        @RequestPart(name = "request") request: PlantRecordCreateRequest,
-        @RequestPart(name = "image", required = false) image: MultipartFile?,
+        @Parameter(description = "데일리 기록 정보") @RequestPart(name = "request") request: PlantRecordCreateRequest,
+        @Parameter(description = "데일리 기록 사진") @RequestPart(name = "image", required = false) image: MultipartFile?,
         @AccessDeviceToken deviceToken: String,
     ): ResponseEntity<Unit> {
         plantService.createRecord(request, image, deviceToken)
