@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
 
-@Tag(name = "Plant Information Command", description = "식물 정보 조회")
+@Tag(name = "Plant Information Query", description = "식물 정보 조회")
 @RestController
 @RequestMapping("/api/v1/plantInformations")
 class PlantInformationQueryApi(
