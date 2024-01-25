@@ -60,6 +60,9 @@ class PlantService(
         val findMember = memberRepository.findByDeviceTokenOrThrow(deviceToken)
         val findCompanionPlant = companionPlantRepository.findByIdAndMemberIdOrThrow(plantId, findMember.getId)
 
+        if (historyType == HistoryType.RECORDING)
+            throw IllegalArgumentException("데일리 기록 히스토리는 직접 추가할 수 없습니다.")
+
         findCompanionPlant.saveHistory(historyType)
     }
 
