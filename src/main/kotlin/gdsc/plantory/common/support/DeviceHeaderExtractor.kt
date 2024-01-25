@@ -2,7 +2,7 @@ package gdsc.plantory.common.support
 
 import org.springframework.web.context.request.NativeWebRequest
 
-private const val DEVICE_ID_HEADER = "Device-Token"
+const val DEVICE_ID_HEADER = "Device-Token"
 
 class DeviceHeaderExtractor {
 
