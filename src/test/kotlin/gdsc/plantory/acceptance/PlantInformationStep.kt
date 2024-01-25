@@ -17,7 +17,6 @@ class PlantInformationStep {
                 .get("/api/v1/plantInformations")
                 .then()
                 .log().all()
-                .statusCode(HttpStatus.OK.value())
                 .extract()
         }
 
@@ -25,7 +24,6 @@ class PlantInformationStep {
             assertAll(
                 { assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()) },
                 { assertThat(response.jsonPath().getString("plantInformations[].id")).isNotBlank() },
-                { assertThat(response.jsonPath().getString("plantInformations[].imageUrl")).isNotBlank() },
                 { assertThat(response.jsonPath().getString("plantInformations[].species")).isNotBlank() },
                 { assertThat(response.jsonPath().getString("plantInformations[].familyName")).isNotBlank() },
             )

@@ -15,7 +15,6 @@ interface PlantInformationRepository : JpaRepository<PlantInformation, Long> {
         """
             SELECT new gdsc.plantory.plantInformation.presentation.dto.PlantInformationDto(
                 pi.id,
-                pi.imageUrl._value,
                 pi.species.name,
                 pi.species.familyName
             )
