@@ -82,6 +82,9 @@ class CompanionPlant(
     val getNickName: String
         get() = this.nickname.value
 
+    val getName: String
+        get() = this.nickname.value
+
     val getSortDescription: String
         get() = this.shortDescription.value
 

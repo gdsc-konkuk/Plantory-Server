@@ -2,10 +2,10 @@ package gdsc.plantory.acceptance
 
 import gdsc.plantory.plant.presentation.dto.CompanionPlantCreateRequest
 import gdsc.plantory.plant.presentation.dto.CompanionPlantDeleteRequest
-import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
-import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
-import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantHistoryRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordCreateRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
 import io.restassured.RestAssured
 import io.restassured.builder.MultiPartSpecBuilder
 import io.restassured.mapper.ObjectMapperType
@@ -76,13 +76,14 @@ class CompanionPlantStep {
         fun 식물_조회_응답_확인(response: ExtractableResponse<Response>) {
             assertAll(
                 { assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()) },
-                { assertThat(response.jsonPath().getString("companionPlants.id")).isNotBlank() },
-                { assertThat(response.jsonPath().getString("companionPlants.imageUrl")).isNotBlank() },
-                { assertThat(response.jsonPath().getString("companionPlants.nickname")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("companionPlants[].id")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("companionPlants[].imageUrl")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("companionPlants[].nickname")).isNotBlank() },
                 {
-                    assertThat(response.jsonPath().getString("companionPlants.shortDescription")).isNotBlank()
+                    assertThat(response.jsonPath().getString("companionPlants[].shortDescription")).isNotBlank()
                 },
-                { assertThat(response.jsonPath().getString("companionPlants.birthDate")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("companionPlants[].birthDate")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("companionPlants[].name")).isNotBlank() },
             )
         }
 
@@ -139,7 +140,7 @@ class CompanionPlantStep {
         fun 데일리_기록_조회_응답_확인(response: ExtractableResponse<Response>) {
             assertAll(
                 { assertThat(response.statusCode()).isEqualTo(HttpStatus.OK.value()) },
-                { assertThat(response.jsonPath().getString("id")).isNotBlank() },
+                { assertThat(response.jsonPath().getString("plantRecordId")).isNotBlank() },
                 { assertThat(response.jsonPath().getString("imageUrl")).isNotBlank() },
                 { assertThat(response.jsonPath().getString("comment")).isNotBlank() },
             )

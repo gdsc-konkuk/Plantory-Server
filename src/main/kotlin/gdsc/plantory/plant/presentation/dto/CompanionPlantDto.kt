@@ -9,6 +9,7 @@ data class CompanionPlantDto(
     val nickname: String,
     val shortDescription: String,
     val birthDate: LocalDate,
+    val name: String,
 ) {
     companion object {
         fun from(plant: CompanionPlant): CompanionPlantDto = CompanionPlantDto(
@@ -16,7 +17,8 @@ data class CompanionPlantDto(
             imageUrl = plant.getImageUrl,
             nickname = plant.getNickName,
             shortDescription = plant.getSortDescription,
-            birthDate = plant.getBirthDate
+            birthDate = plant.getBirthDate,
+            name = plant.getName,
         )
     }
 }
