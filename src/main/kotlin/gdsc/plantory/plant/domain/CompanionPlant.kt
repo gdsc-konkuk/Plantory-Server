@@ -100,12 +100,11 @@ class CompanionPlant(
         }
 
         this.records.add(PlantRecord(imageUrl, comment, this))
+        this.saveRecordHistory(date)
     }
 
     fun saveHistory(historyType: HistoryType, date: LocalDate = LocalDate.now()) {
-        if (isNotCurrentDay(date)) {
-            throw IllegalArgumentException("물을 줄 날짜는 오늘 날짜여야 합니다.")
-        }
+        validateInput(historyType, date)
 
         if (historyType == HistoryType.WATER_CHANGE) {
             this.lastWaterDate = date
@@ -123,6 +122,22 @@ class CompanionPlant(
         require(!currentDate.isBefore(birthDate)) { "함께한 날은 음수가 될 수 없습니다. Date: $currentDate" }
 
         return ChronoUnit.DAYS.between(birthDate, currentDate).toInt() + 1
+    }
+
+    private fun validateInput(historyType: HistoryType, date: LocalDate) {
+        if (isRecordType(historyType)) {
+            throw IllegalArgumentException("데일리 기록은 히스토리 타입을 직접 추가할 수 없습니다.")
+        }
+
+        if (isNotCurrentDay(date)) {
+            throw IllegalArgumentException("물을 줄 날짜는 오늘 날짜여야 합니다.")
+        }
+    }
+
+    private fun isRecordType(historyType: HistoryType) = historyType == HistoryType.RECORDING
+
+    private fun saveRecordHistory(date: LocalDate) {
+        this.histories.add(PlantHistory(HistoryType.RECORDING, date, this))
     }
 
     private fun isNotCurrentDay(date: LocalDate) = !date.isEqual(LocalDate.now())

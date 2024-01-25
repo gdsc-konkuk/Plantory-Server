@@ -1,5 +1,7 @@
 package gdsc.plantory.plant.service
 
+import gdsc.plantory.fixture.기록없는_테스트식물_ID
+import gdsc.plantory.fixture.테스터_디바이스_토큰
 import gdsc.plantory.plant.domain.CompanionPlant
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
@@ -8,6 +10,7 @@ import gdsc.plantory.plantInformation.domain.PlantInformationRepository
 import gdsc.plantory.util.AcceptanceTest
 import jakarta.persistence.EntityManager
 import org.assertj.core.api.Assertions.assertThat
+import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.Assertions.assertAll
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -23,6 +26,16 @@ class PlantServiceTest(
     @Autowired val entityManager: EntityManager,
     @Autowired val plantInformationRepository: PlantInformationRepository,
 ) : AcceptanceTest() {
+
+    @Test
+    fun `데일리 기록 히스토리는 직접 추가할 수 없다`() {
+        // when, then
+        assertThatThrownBy {
+            plantService.createPlantHistory(기록없는_테스트식물_ID, 테스터_디바이스_토큰, HistoryType.RECORDING)
+        }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("데일리 기록은 히스토리 타입을 직접 추가할 수 없습니다.")
+    }
 
     @Test
     fun `사용자는 식물의 데일리 기록을 조회하여 사진, 본문, 물준유무를 확인할 수 있다`() {
@@ -60,7 +73,6 @@ class PlantServiceTest(
             memberId = 1L,
         )
         companionPlant.saveRecord("test-record", "https://test.com", today)
-        companionPlant.saveHistory(HistoryType.RECORDING, today)
         companionPlant.saveHistory(HistoryType.WATER_CHANGE, today)
         val savedPlant = companionPlantRepository.save(companionPlant)
 
@@ -116,7 +128,6 @@ class PlantServiceTest(
         )
         val today = LocalDate.now()
         companionPlant.saveRecord("test-record", "https://test.com", today)
-        companionPlant.saveHistory(HistoryType.RECORDING, today)
         companionPlant.saveHistory(HistoryType.POT_CHANGE, today)
         val savedPlant = companionPlantRepository.save(companionPlant)
 
