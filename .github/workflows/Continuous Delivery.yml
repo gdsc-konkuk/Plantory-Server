@@ -26,12 +26,6 @@ jobs:
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
 
-      - name: Set env for Gradle build
-        run: |
-          echo DB_URL=${{ secrets.DB_URL }} >> $GITHUB_ENV
-          echo DB_USER=${{ secrets.DB_USR }} >> $GITHUB_ENV
-          echo DB_PASSWORD=${{ secrets.DB_PWD }} >> $GITHUB_ENV
-
       - name: Execute Gradle build
         run: ./gradlew build
 
