@@ -3,7 +3,7 @@ name: Feature Request
 about: 기능 구현 요청
 description: 새로운 기능 구현
 title: "[Feat] ~~"
-labels: "🚀 기능 구현 🚀"
+labels: "🚀 기능 구현 🚀"
 assignees: ''
 
 ---
