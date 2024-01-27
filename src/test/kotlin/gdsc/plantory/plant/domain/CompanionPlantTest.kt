@@ -31,6 +31,23 @@ class CompanionPlantTest {
     }
 
     @Test
+    fun `반려식물에게 레코드 타입의 히스토리를 직접 저장하려는 경우 예외 발생`() {
+        val waterCycle = 7L
+        val lastWaterDate = LocalDate.now()
+        val nextWaterDate = lastWaterDate.plusDays(waterCycle)
+        val companionPlant = CompanionPlant(
+            "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
+            "나의 아기 선인장", "shine", nextWaterDate, lastWaterDate, waterCycle.toInt()
+        )
+
+        assertThatThrownBy {
+            companionPlant.saveHistory(HistoryType.RECORDING, LocalDate.now())
+        }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessageContaining("데일리 기록은 히스토리 타입을 직접 추가할 수 없습니다.")
+    }
+
+    @Test
     fun `물 준 주기가 맞지 않으면 예외 발생`() {
         val waterCycle = 7L
         val lastWaterDate = LocalDate.now()

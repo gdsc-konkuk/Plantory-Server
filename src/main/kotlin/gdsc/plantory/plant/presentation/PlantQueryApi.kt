@@ -2,24 +2,31 @@ package gdsc.plantory.plant.presentation
 
 import gdsc.plantory.common.support.AccessDeviceToken
 import gdsc.plantory.plant.presentation.dto.CompanionPlantsLookupResponse
-import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupRequest
 import gdsc.plantory.plant.presentation.dto.PlantHistoriesLookupResponse
-import gdsc.plantory.plant.presentation.dto.PlantRecordDto
-import gdsc.plantory.plant.presentation.dto.PlantRecordLookupRequest
+import gdsc.plantory.plant.presentation.dto.PlantRecordLookupResponse
 import gdsc.plantory.plant.service.PlantService
-import org.springframework.http.MediaType
+import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.Parameter
+import io.swagger.v3.oas.annotations.responses.ApiResponse
+import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.RequestBody
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
+import java.time.LocalDate
+import java.time.YearMonth
 
+@Tag(name = "Plant Query", description = "반려식물 정보 조회")
 @RestController
 @RequestMapping("/api/v1/plants")
 class PlantQueryApi(
     private val plantService: PlantService
 ) {
 
+    @Operation(summary = "반려식물 조회", description = "사용자의 반려식물 목록을 조회합니다.")
+    @ApiResponse(responseCode = "200", description = "조회 성공")
     @GetMapping
     fun lookupAllCompanionPlantsOfMember(
         @AccessDeviceToken deviceToken: String
@@ -28,21 +35,27 @@ class PlantQueryApi(
         return ResponseEntity.ok().body(companionPlants)
     }
 
-    @GetMapping("/histories", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @Operation(summary = "반려식물 히스토리(데일리 기록, 물줌, 분갈이) 조회", description = "해당 달의 반려식물 히스토리를 조회합니다.")
+    @ApiResponse(responseCode = "200", description = "조회 성공")
+    @GetMapping("/{companionPlantId}/histories")
     fun lookupAllPlantHistoriesOfMonth(
-        @RequestBody request: PlantHistoriesLookupRequest,
+        @Parameter(description = "조회할 반려식물 ID") @PathVariable companionPlantId: Long,
+        @Parameter(description = "조회 기간(달)") @RequestParam targetMonth: YearMonth,
         @AccessDeviceToken deviceToken: String
     ): ResponseEntity<PlantHistoriesLookupResponse> {
-        val histories = plantService.lookupAllPlantHistoriesOfMonth(request, deviceToken)
+        val histories = plantService.lookupAllPlantHistoriesOfMonth(companionPlantId, targetMonth, deviceToken)
         return ResponseEntity.ok().body(histories)
     }
 
-    @GetMapping("/records", consumes = [MediaType.APPLICATION_JSON_VALUE])
+    @Operation(summary = "반려식물 데일리 기록 조회", description = "데일리 기록(이미지, 일지 등)을 조회합니다.")
+    @ApiResponse(responseCode = "200", description = "조회 성공")
+    @GetMapping("/{companionPlantId}/records")
     fun lookupPlantRecordOfDate(
-        @RequestBody request: PlantRecordLookupRequest,
+        @Parameter(description = "데일리 기록의 반려식물") @PathVariable companionPlantId: Long,
+        @Parameter(description = "데일리 기록의 날짜") @RequestParam recordDate: LocalDate,
         @AccessDeviceToken deviceToken: String
-    ): ResponseEntity<PlantRecordDto> {
-        val plantRecord = plantService.lookupPlantRecordOfDate(request, deviceToken)
+    ): ResponseEntity<PlantRecordLookupResponse> {
+        val plantRecord = plantService.lookupPlantRecordOfDate(companionPlantId, recordDate, deviceToken)
         return ResponseEntity.ok().body(plantRecord)
     }
 }

@@ -14,6 +14,10 @@ spring:
     username: plantory
     password: plantory1234
     driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 25MB
 
 local:
   image:

@@ -58,7 +58,7 @@ class PhotoLocalManager(
 
     private fun uploadFileInLocal(multipartFile: MultipartFile, uploadPath: File) {
         try {
-            multipartFile.transferTo(uploadPath)
+            multipartFile.transferTo(uploadPath.toPath())
         } catch (e: IOException) {
             throw IllegalStateException("파일 변환이 실패했습니다.")
         }

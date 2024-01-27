@@ -1,7 +1,9 @@
 package gdsc.plantory.plantInformation.domain
 
 import NotFoundException
+import gdsc.plantory.plantInformation.presentation.dto.PlantInformationDto
 import org.springframework.data.jpa.repository.JpaRepository
+import org.springframework.data.jpa.repository.Query
 import kotlin.jvm.optionals.getOrNull
 
 fun PlantInformationRepository.findByIdOrThrow(id: Long): PlantInformation {
@@ -9,4 +11,15 @@ fun PlantInformationRepository.findByIdOrThrow(id: Long): PlantInformation {
 }
 
 interface PlantInformationRepository : JpaRepository<PlantInformation, Long> {
+    @Query(
+        """
+            SELECT new gdsc.plantory.plantInformation.presentation.dto.PlantInformationDto(
+                pi.id,
+                pi.species.name,
+                pi.species.familyName
+            )
+            FROM PlantInformation pi
+        """
+    )
+    fun findAllSpeciesInformations(): List<PlantInformationDto>
 }
