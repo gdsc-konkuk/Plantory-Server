@@ -15,7 +15,6 @@
 
 ### 등록 전 확인
 
-- [ ] 모든 test가 pass했나요?
 - [ ] 모든 code가 well-formatted인가요?
 - [ ] commit message는 직관적이었을까요?
 - [ ] 삭제해야 할, 주석처리 된 코드는 없을까요?

@@ -30,4 +30,4 @@ jobs:
           command: |
             docker pull goldentrash/plantory:latest
             docker stop plantory
-            docker run -d --rm -p 8080:8080 --mount type=volume,src=resources,dst=/app/resources --name plantory goldentrash/plantory
+            docker run -d --rm -p 8080:8080 --mount type=volume,src=resources,dst=/app/resources --env-file plantory.env --name plantory goldentrash/plantory
