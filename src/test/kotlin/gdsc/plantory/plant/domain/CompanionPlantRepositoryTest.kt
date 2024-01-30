@@ -1,6 +1,7 @@
 package gdsc.plantory.plant.domain
 
-import gdsc.plantory.member.domain.Member
+import gdsc.plantory.fixture.CompanionPlantFixture.generateCompanionPlant
+import gdsc.plantory.fixture.MemberFixture.generateMember
 import gdsc.plantory.member.domain.MemberRepository
 import gdsc.plantory.util.AcceptanceTest
 import org.assertj.core.api.Assertions.assertThat
@@ -19,7 +20,7 @@ class CompanionPlantRepositoryTest(
     @Test
     fun `물주는 날짜가 된 반려식물의 별칭과 해당 유저의 deviceToken을 조회한다`() {
         // given
-        val member = Member("shine")
+        val member = generateMember(deviceToken = "shine")
         val savedMember = memberRepository.save(member)
         val memberId = savedMember.getId
 
@@ -50,15 +51,12 @@ class CompanionPlantRepositoryTest(
             )
     }
 
-    private fun createCompanionPlantByLastWaterDate(nextWaterDate: LocalDate, memberId: Long) = CompanionPlant(
-        _imageUrl = "https://nongsaro.go.kr/cms_contents/301/13336_MF_ATTACH_05.jpg",
-        _shortDescription = "덕구리난은 덕구리난과!",
-        _nickname = nextWaterDate.toString(),
-        birthDate = LocalDate.of(2024, 1, 1),
-        nextWaterDate = nextWaterDate,
-        lastWaterDate = LocalDate.of(2024, 1, 4),
-        waterCycle = 3,
-        plantInformationId = 1L,
-        memberId = memberId,
-    )
+    private fun createCompanionPlantByLastWaterDate(nextWaterDate: LocalDate, memberId: Long) =
+        generateCompanionPlant(
+            memberId = memberId,
+            nickname = nextWaterDate.toString(),
+            nextWaterDate = nextWaterDate,
+            lastWaterDate = nextWaterDate.minusDays(5),
+            waterCycle = 5
+        )
 }
