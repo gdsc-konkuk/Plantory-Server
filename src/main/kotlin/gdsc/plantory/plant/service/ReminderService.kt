@@ -2,6 +2,7 @@ package gdsc.plantory.plant.service
 
 import gdsc.plantory.event.Events
 import gdsc.plantory.event.notification.WaterCycleEvent
+import gdsc.plantory.event.notification.WaterCycleEvents
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.presentation.dto.CompanionPlantWaterCycleDto
 import org.springframework.scheduling.annotation.Scheduled
@@ -18,7 +19,7 @@ class ReminderService(
     @Scheduled(cron = "0 0 8 * * *")
     fun sendWaterNotification() {
         val companionPlants = companionPlantRepository.findAllByNextWaterDate(LocalDate.now())
-        val events: List<WaterCycleEvent> = buildWaterCycleEvents(companionPlants)
+        val events = WaterCycleEvents(buildWaterCycleEvents(companionPlants))
         Events.raise(events)
     }
 

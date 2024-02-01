@@ -24,8 +24,8 @@ class WaterCycleEventListener(
 
     @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
-    fun sendFcmNotification(events: List<WaterCycleEvent>) {
-        val messages: List<Message> = createMessages(events, FCMChannel.WATER_ALERT.name)
+    fun sendFcmNotification(events: WaterCycleEvents) {
+        val messages: List<Message> = createMessages(events.plantsNeedWateredToday, FCMChannel.WATER_ALERT.name)
 
         try {
             firebaseMessaging.sendEach(messages)

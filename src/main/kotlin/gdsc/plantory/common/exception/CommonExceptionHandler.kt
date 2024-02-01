@@ -26,7 +26,7 @@ class CommonExceptionHandler {
     fun unHandleException(ex: Exception, request: HttpServletRequest): ResponseEntity<ErrorResponse> {
         log.error("서버 에러 발생! ${request.method} ${request.requestURI} ${ex.message}")
 
-        return ResponseEntity.internalServerError().body(ErrorResponse("서버 에러가 발생했습니다. 관리자에게 문의해주세요."))
+        return ResponseEntity.internalServerError().body(ErrorResponse(ex.message))
     }
 
     @ExceptionHandler
