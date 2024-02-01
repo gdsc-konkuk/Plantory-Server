@@ -1,5 +1,6 @@
 package gdsc.plantory.plantInformation.domain
 
+import gdsc.plantory.fixture.PlantInformationFixture.generatePlantInformation
 import org.assertj.core.api.Assertions.assertThatCode
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -28,14 +29,7 @@ class PlantInformationTest {
     @CsvSource(value = ["'',Cactaceae; Juss.", "Cactaceae,''", "'',''"])
     fun `Species가 공백이라면 예외를 반환`(species: String, familyName: String) {
         assertThrows<IllegalArgumentException> {
-            PlantInformation(
-                "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-                species, familyName,
-                "15 ~ 20", "5",
-                5, 5, 4, 3,
-                "earthy", "caution", "slow", "40%",
-                "veranda",
-            )
+            generatePlantInformation(species = species, familyName = familyName)
         }
     }
 
@@ -43,14 +37,7 @@ class PlantInformationTest {
     @CsvSource(value = ["'',5", "15 ~ 20,''", "'',''"])
     fun `Temperature가 공백이라면 예외를 반환`(requireTemp: String, minimumTemp: String) {
         assertThrows<IllegalArgumentException> {
-            PlantInformation(
-                "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-                "Cactaceae", "Cactaceae; Juss.",
-                requireTemp, minimumTemp,
-                5, 5, 4, 3,
-                "earthy", "caution", "slow", "40%",
-                "veranda",
-            )
+            generatePlantInformation(requireTemp = requireTemp, minimumTemp = minimumTemp)
         }
     }
 
@@ -60,13 +47,11 @@ class PlantInformationTest {
         waterCycleSpring: Int, waterCycleSummer: Int, waterCycleAutumn: Int, waterCycleWinter: Int
     ) {
         assertThrows<IllegalArgumentException> {
-            PlantInformation(
-                "https://nongsaro.go.kr/cms_contents/301/14687_MF_ATTACH_01.jpg",
-                "Cactaceae", "Cactaceae; Juss.",
-                "15 ~ 20", "5",
-                waterCycleSpring, waterCycleSummer, waterCycleAutumn, waterCycleWinter,
-                "earthy", "caution", "slow", "40%",
-                "veranda",
+            generatePlantInformation(
+                waterCycleSpring = waterCycleSpring,
+                waterCycleSummer = waterCycleSummer,
+                waterCycleAutumn = waterCycleAutumn,
+                waterCycleWinter = waterCycleWinter
             )
         }
     }

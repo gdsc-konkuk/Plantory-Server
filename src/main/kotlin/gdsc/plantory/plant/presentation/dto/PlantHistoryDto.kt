@@ -1,7 +1,7 @@
 package gdsc.plantory.plant.presentation.dto
 
-import gdsc.plantory.plant.domain.PlantHistory
 import gdsc.plantory.plant.domain.HistoryType
+import gdsc.plantory.plant.domain.PlantHistory
 import java.time.LocalDate
 
 data class PlantHistoryDto(

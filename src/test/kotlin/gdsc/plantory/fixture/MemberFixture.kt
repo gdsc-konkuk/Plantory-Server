@@ -2,20 +2,11 @@ package gdsc.plantory.fixture
 
 import gdsc.plantory.member.domain.Member
 
-private var _테스터_ID = 0L
-val 테스터_ID: Long
-    get() = _테스터_ID
-
-const val 테스터_디바이스_토큰 = "device-token"
+const val 테스터_디바이스_토큰 = "tester-token"
 
 object MemberFixture {
 
-    fun generateTestMember(id: Long): Member {
-        _테스터_ID = id
-
-        return Member(
-            deviceToken = 테스터_디바이스_토큰,
-            id = id
-        )
+    fun generateMember(deviceToken: String = "device-token"): Member {
+        return Member(deviceToken = deviceToken)
     }
 }

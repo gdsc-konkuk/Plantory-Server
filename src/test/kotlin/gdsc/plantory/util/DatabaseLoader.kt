@@ -1,8 +1,9 @@
 package gdsc.plantory.util
 
-import gdsc.plantory.fixture.CompanionPlantFixture
-import gdsc.plantory.fixture.MemberFixture
-import gdsc.plantory.fixture.PlantInformationFixture
+import gdsc.plantory.fixture.CompanionPlantFixture.generateCompanionPlant
+import gdsc.plantory.fixture.MemberFixture.generateMember
+import gdsc.plantory.fixture.PlantInformationFixture.generatePlantInformation
+import gdsc.plantory.fixture.테스터_디바이스_토큰
 import gdsc.plantory.member.domain.MemberRepository
 import gdsc.plantory.plant.domain.CompanionPlantRepository
 import gdsc.plantory.plant.domain.HistoryType
@@ -25,18 +26,26 @@ class DatabaseLoader(
     fun loadData() {
         log.info("[call DataLoader]")
 
-        val testMember = MemberFixture.generateTestMember(1L)
-        val testPlantInformation = PlantInformationFixture.generateTestPlantInformation(1L)
-        val testCompanionPlantWillHaveHistories = CompanionPlantFixture.generateTestCompanionPlantWillHaveHistories(1L)
-        val testCompanionPlantHasNoHistories = CompanionPlantFixture.generateTestCompanionPlantHasNoHistories(2L)
+        val testMember = generateMember(deviceToken = 테스터_디바이스_토큰)
+        val savedTestMember = memberRepository.save(testMember)
 
-        testCompanionPlantWillHaveHistories.saveRecord("test-record", "https://test.com")
-        testCompanionPlantWillHaveHistories.saveHistory(HistoryType.POT_CHANGE)
-        testCompanionPlantWillHaveHistories.saveHistory(HistoryType.WATER_CHANGE)
+        val testPlantInformation = generatePlantInformation()
+        val savedTestPlantInformation = plantInformationRepository.save(testPlantInformation)
 
-        memberRepository.save(testMember)
-        plantInformationRepository.save(testPlantInformation)
-        companionPlantRepository.saveAll(listOf(testCompanionPlantWillHaveHistories, testCompanionPlantHasNoHistories))
+        val testCompanionPlantHasHistories = generateCompanionPlant(
+            memberId = savedTestMember.getId,
+            plantInformationId = savedTestPlantInformation.getId,
+        )
+        testCompanionPlantHasHistories.saveRecord("test-record", "https://test.com")
+        testCompanionPlantHasHistories.saveHistory(HistoryType.POT_CHANGE)
+        testCompanionPlantHasHistories.saveHistory(HistoryType.WATER_CHANGE)
+        val savedTestCompanionPlantHasHistories = companionPlantRepository.save(testCompanionPlantHasHistories)
+
+        val testCompanionPlantHasNoHistories = generateCompanionPlant(
+            memberId = savedTestMember.getId,
+            plantInformationId = savedTestPlantInformation.getId,
+        )
+        val savedTestCompanionPlantHasNoHistories = companionPlantRepository.save(testCompanionPlantHasNoHistories)
 
         log.info("[init complete DataLoader]")
     }
