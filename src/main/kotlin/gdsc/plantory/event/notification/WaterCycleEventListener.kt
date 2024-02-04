@@ -8,10 +8,9 @@ import com.google.firebase.messaging.Message
 import com.google.firebase.messaging.Notification
 import gdsc.plantory.event.FCMChannel
 import org.slf4j.LoggerFactory
+import org.springframework.context.event.EventListener
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
-import org.springframework.transaction.event.TransactionPhase
-import org.springframework.transaction.event.TransactionalEventListener
 
 @Component
 class WaterCycleEventListener(
@@ -22,12 +21,15 @@ class WaterCycleEventListener(
         private val log = LoggerFactory.getLogger(WaterCycleEventListener::class.java)
     }
 
-    @TransactionalEventListener(phase = TransactionPhase.AFTER_COMMIT)
     @Async
+    @EventListener
     fun sendFcmNotification(events: WaterCycleEvents) {
+        log.info("send FCM notification by WaterCycleEventListener")
         val messages: List<Message> = createMessages(events.plantsNeedWateredToday, FCMChannel.WATER_ALERT.name)
 
         try {
+            if (messages.isEmpty()) return
+
             firebaseMessaging.sendEach(messages)
         } catch (e: FirebaseMessagingException) {
             log.warn("fail send FCM message", e)
