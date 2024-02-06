@@ -1,9 +1,8 @@
 ---
 name: Feature Request
 about: 기능 구현 요청
-description: 새로운 기능 구현
 title: "[Feat] ~~"
-labels: "🚀 기능 구현 🚀"
+labels: "\b\U0001F680 기능 구현 \U0001F680"
 assignees: ''
 
 ---
