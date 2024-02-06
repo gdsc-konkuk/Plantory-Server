@@ -90,9 +90,7 @@ class PlantService(
             companionPlantRepository.findByIdAndMemberIdOrThrow(companionPlantId, findMember.getId)
         val imagePath: String = saveImageAndGetPath(image, findCompanionPlant.getImageUrl)
 
-        // TODO : Cloud 환경으로 이전 후 제거, 로컬 사진 저장 테스트 용도
-        val baseUrl = "https://nongsaro.go.kr/"
-        findCompanionPlant.saveRecord(request.comment, baseUrl + imagePath)
+        findCompanionPlant.saveRecord(request.comment, imagePath)
     }
 
     @Transactional(readOnly = true)

@@ -27,6 +27,7 @@ spring:
       max-request-size: 25MB
 
 local:
+  url: ${SERVER_URL}
   image:
     root: resources
 

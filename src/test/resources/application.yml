@@ -20,6 +20,7 @@ spring:
       max-request-size: 25MB
 
 local:
+  url: http://127.0.0.1:8080
   image:
     root: src/test/resources
 

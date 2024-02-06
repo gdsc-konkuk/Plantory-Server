@@ -10,6 +10,8 @@ private const val SLASH = "/"
 
 @Component
 class PhotoLocalManager(
+    @Value("\${local.url}")
+    private val serverURL: String,
     @Value("\${local.image.root}")
     private val localPath: String,
     @Value("\${companionPlant.image.directory}")
@@ -30,6 +32,7 @@ class PhotoLocalManager(
             uploadFileInLocal(multipartFile, uploadPath)
 
             StringBuilder()
+                .append(serverURL)
                 .append(SLASH)
                 .append(workingDirectory)
                 .append(SLASH)
